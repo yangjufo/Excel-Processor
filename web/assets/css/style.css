@@ -2199,7 +2199,7 @@ p {
 /*# sourceMappingURL=style.css.map */
 
 /*file drop*/
-.inputDnD .form-control-file {
+.inputFileDnD .form-control-file {
   position: relative;
   width: 100%;
   height: 100%;
@@ -2210,7 +2210,7 @@ p {
   background-color: #c61c23;
   box-shadow: 0 0 5px solid currentColor;
 }
-.inputDnD .form-control-file:before {
+.inputFileDnD .form-control-file:before {
   content: attr(data-title);
   position: absolute;
   top: 0.5em;
@@ -2226,7 +2226,101 @@ p {
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   overflow: hidden;
 }
-.inputDnD .form-control-file:hover:before {
+.inputFileDnD .form-control-file:hover:before {
   border-style: solid;
   box-shadow: inset 0px 0px 0px 0.25em currentColor;
+}
+
+/*Dropdown*/
+.selectDnD {
+  max-width: 600px;
+}
+
+.selectDnD .title{
+  padding: 5px 3px;
+  font-weight: bold;
+}
+.selectDnD .dropdownbox {
+  width: 100%;
+  border-radius: 3px;
+  background-color: #fff;
+  height: 40px;
+  border: 1px solid #dedede4f;
+  border-bottom: 2px solid #f14836;
+  color: #222;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.selectDnD .dropdownbox > p {
+  padding: 5px 3px;
+  font-size: 1.25em;
+  line-height: 1.4em;
+  user-select: none;
+  -moz-user-select:none;
+  /* Safari */
+  -khtml-user-select: none;
+}
+
+.selectDnD ul.menu {
+  position: relative;
+  margin: 0 auto;
+  width: 400px auto;
+  overflow: hidden;
+  height: 0;
+  margin-top: 10px;
+     -webkit-transition: all 0.3s ease-in;
+   -moz-transition: all 0.3s ease-in;
+     -o-transition: all 0.3s ease-in;
+        transition: all 0.3s ease-in;
+  /*-moz-transform:scale(0); */
+  color: #222;
+  font-size: 18px;
+  cursor: pointer;
+  user-select: none;
+  -moz-user-select:none;
+  /* Safari */
+  -khtml-user-select: none;
+}
+
+.selectDnD ul.menu li {
+  padding: 2px 10px;
+    font-size: 1.25em;
+  line-height: 1.4em;
+       -webkit-transition: all 0.3s ease-in;
+   -moz-transition: all 0.3s ease-in;
+     -o-transition: all 0.3s ease-in;
+        transition: all 0.3s ease-in;
+  border-bottom: 1px dotted rgb(254,238,223);
+}
+.selectDnD ul.menu li:hover {
+  padding-left: 20px;
+  color: #fde4e1;
+  background: #f14836;
+}
+
+.selectDnD .menu.showMenu {
+  /*-moz-transform:scale(1);*/
+  height: 165px;
+}
+
+
+.inputDnD {
+  max-width: 600px;
+}
+
+.inputDnD .title{
+  padding: 10px 3px;
+  font-weight: bold;
+}
+
+.inputDnD input {
+  padding-left: 3px;
+  width: 100%;
+  border-radius: 10px;
+  background-color: #fff;
+  height: 50px;
+  border: 2px solid #f14836;
+  color: #222;
+  font-size: 18px;
 }

@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
-<section data-scroll-index="0" id="pricing" class="pricing-area pt-115">
+<section data-scroll-index="0" id="pricing" class="pricing-area pt-115" style="height: auto;">
     <div id="home" class="header-hero bg_cover d-lg-flex align-items-center"
-        style="background-image: url(../assets/images/header-hero.jpg)">
+        style="background-image: url(../../assets/images/header-hero.jpg);">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -11,7 +11,7 @@
                             <b>请选择要处理的文件</b>
                         </h1>
                         <div class="header-singup wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.8s">
-                            <div class="form-group inputDnD">
+                            <div class="form-group inputFileDnD">
                                 <input type="file" class="form-control-file text-primary font-weight-bold"
                                     id="upload-file-name"
                                     accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
@@ -21,7 +21,7 @@
                         <!-- partial -->
                         <div class="header-singup wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.8s">
                             <input type="text" id="upload-file-path" placeholder="请输入文件路径，默认为程序所在位置">
-                            <button class="main-btn" onclick="uploadFile()">上传</button>
+                            <button class="main-btn" onclick="uploadFile()">加载</button>
                         </div>
                     </div> <!-- header hero content -->
                 </div>
@@ -32,7 +32,7 @@
                         data-wow-duration="1s" data-wow-delay="0.6s"
                         style="visibility: visible; animation-duration: 1s; animation-delay: 0.6s; animation-name: fadeIn;">
                         <div class="pricing-title mt-20">
-                            <h4 class="title">已上传列表</h4>
+                            <h4 class="title">已加载文件列表</h4>
                         </div>
                         <div class="pricing-list pt-40">
                             <ul id="upload-file-list">
@@ -42,12 +42,343 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class=" pricing-btn pt-70">
-                            <a class="main-btn" href="tasks.html">开始处理</a>
-                        </div>
                     </div>
                 </div>
             </div> <!-- container -->
         </div> <!-- header hero -->
+</section>
+<section id="services" class="our-services-area pt-115">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-5 col-lg-6 col-md-8 col-sm-9">
+                <div class="section-title text-center wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s"
+                    style="visibility: visible; animation-duration: 1s; animation-delay: 0.2s; animation-name: fadeInUp;">
+                    <h6 class="sub-title">任务</h6>
+                    <h4 class="title">请添加<span>要执行的任务</span></h4>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="our-services-tab pt-30">
+                    <ul class="nav justify-content-center wow fadeIn" data-wow-duration="1s" data-wow-delay="0.5s"
+                        id="myTab" role="tablist"
+                        style="visibility: visible; animation-duration: 1s; animation-delay: 0.5s; animation-name: fadeIn;">
+                        <li class="nav-item">
+                            <a class="active" id="task-sum-tab" data-toggle="tab" href="#task-sum" role="tab"
+                                aria-controls="task-sum" aria-selected="true">
+                                <i class="lni-calculator"></i> <span>求和</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="task-match-tab" data-toggle="tab" href="#task-match" role="tab"
+                                aria-controls="task-match" aria-selected="false" class="">
+                                <i class="lni-search"></i> <span>数据匹配</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent" style="height: auto;">
+                        <div class="tab-pane fade active show task" id="task-sum" role="tabpanel"
+                            aria-labelledby="task-sum-tab">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="selectDnD our-services-content mt-45">
+                                        <div class="title">
+                                            <h4>文件</h4>
+                                        </div>
+                                        <div class="dropdownbox">
+                                            <p class="select-file-path"">请选择文件</p>
+                                        </div>
+                                        <ul class=" menu select-file-path-list">
+                                                </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="our-services-content mt-45 selectDnD">
+                                            <div class="title">
+                                                <h4>表</h4>
+                                            </div>
+                                            <div class="dropdownbox">
+                                                <p class="select-sheet-name">请选择表</p>
+                                            </div>
+                                            <ul class="menu select-sheet-name-list">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="our-services-content mt-45 selectDnD">
+                                            <div class="title">
+                                                <h4>分组列</h4>
+                                            </div>
+                                            <div class="dropdownbox">
+                                                <p class="select-group-col">请选择分组列</p>
+                                            </div>
+                                            <ul class="menu group-column-list">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="our-services-content mt-45 selectDnD">
+                                            <div class="title">
+                                                <h4>数值列</h4>
+                                            </div>
+                                            <div class="dropdownbox">
+                                                <p class="select-value-col">请选择数值列</p>
+                                            </div>
+                                            <ul class="menu value-column-list">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="our-services-content mt-45 selectDnD">
+                                            <div class="title">
+                                                <h4>分组列最小值</h4>
+                                            </div>
+                                            <div class="dropdownbox">
+                                                <p class="select-group-col-min">请选择最小值，空白表示全部</p>
+                                            </div>
+                                            <ul class="menu group-col-min-value-list">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="our-services-content mt-45 selectDnD">
+                                            <div class="title">
+                                                <h4>分组列最大值</h4>
+                                            </div>
+                                            <div class="dropdownbox">
+                                                <p class="select-group-col-max">请选择最大值，空白表示全部</p>
+                                            </div>
+                                            <ul class="menu group-col-max-value-list">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade task" id="task-match" role="tabpanel"
+                                aria-labelledby="task-match-tab">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="selectDnD our-services-content mt-45">
+                                            <div class="title">
+                                                <h4>文件</h4>
+                                            </div>
+                                            <div class="dropdownbox">
+                                                <p class="select-file-path">请选择文件</p>
+                                            </div>
+                                            <ul class=" menu select-file-path-list">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="our-services-content mt-45 selectDnD">
+                                            <div class="title">
+                                                <h4>表</h4>
+                                            </div>
+                                            <div class="dropdownbox">
+                                                <p class="select-sheet-name">请选择表</p>
+                                            </div>
+                                            <ul class="menu select-sheet-name-list">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="our-services-content mt-45 selectDnD">
+                                            <div class="title">
+                                                <h4>分组列</h4>
+                                            </div>
+                                            <div class="dropdownbox">
+                                                <p class="select-group-col">请选择分组列</p>
+                                            </div>
+                                            <ul class="menu group-column-list">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="our-services-content mt-45 selectDnD">
+                                            <div class="title">
+                                                <h4>数值列</h4>
+                                            </div>
+                                            <div class="dropdownbox">
+                                                <p class="select-value-col">请选择数值列</p>
+                                            </div>
+                                            <ul class="menu value-column-list">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="our-services-content mt-45 selectDnD">
+                                            <div class="title">
+                                                <h4>分组列最小值</h4>
+                                            </div>
+                                            <div class="dropdownbox">
+                                                <p class="select-group-col-min">请选择最小值，空白表示全部</p>
+                                            </div>
+                                            <ul class="menu group-col-min-value-list">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="our-services-content mt-45 selectDnD">
+                                            <div class="title">
+                                                <h4>分组列最大值</h4>
+                                            </div>
+                                            <div class="dropdownbox">
+                                                <p class="select-group-col-max">请选择最大值，空白表示全部</p>
+                                            </div>
+                                            <ul class="menu group-col-max-value-list">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="inputDnD our-services-content mt-45">
+                                        <div class="title">
+                                            <h4>输出文件路径</h4>
+                                        </div>
+                                        <input type="text" id="output-file-path" placeholder="请输入输出文件路径">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="inputDnD our-services-content mt-45">
+                                        <div class="title">
+                                            <h4>输出表名</h4>
+                                        </div>
+                                        <input type="text" id="output-sheet-name" placeholder="请输入表名">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="service-btn text-center pt-25 pb-15">
+                                    <a class="main-btn main-btn-2" href="#">添加任务</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container" style="padding-top: 50px;">
+            <div class="row">
+                <div class="col-lg-6 col-md-8">
+                    <div class="section-title wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s"
+                        style="visibility: visible; animation-duration: 1s; animation-delay: 0.2s; animation-name: fadeInUp;">
+                        <h6 class="sub-title">已添加</h6>
+                        <h4 class="title"><span>任务列表</span></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="service-wrapper mt-60 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.6s"
+                style="visibility: visible; animation-duration: 1s; animation-delay: 0.6s; animation-name: fadeInUp;">
+                <div class="row no-gutters justify-content-center">
+                    <div class="col-lg-4 col-md-7">
+                        <div class="single-service d-flex">
+                            <div class="service-icon">
+                                <img src="../assets/images/service-2.png" alt="Icon">
+                            </div>
+                            <div class="service-content media-body">
+                                <h4 class="service-title">Highly Experienced</h4>
+                                <p class="text">Lorem Ipsum is simply dummy tex of the printing and typesetting
+                                    industry.
+                                    Lorem Ipsum .</p>
+                            </div>
+                            <div class="shape shape-1">
+                                <img src="../assets/images/shape/shape-1.svg" alt="shape">
+                            </div>
+                            <div class="shape shape-2">
+                                <img src="../assets/images/shape/shape-2.svg" alt="shape">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-7">
+                        <div class="single-service service-border d-flex">
+                            <div class="service-icon">
+                                <img src="../assets/images/service-2.png" alt="Icon">
+                            </div>
+                            <div class="service-content media-body">
+                                <h4 class="service-title">Bunch of Services</h4>
+                                <p class="text">Lorem Ipsum is simply dummy tex of the printing and typesetting
+                                    industry.
+                                    Lorem Ipsum .</p>
+                            </div>
+                            <div class="shape shape-3">
+                                <img src="../assets/images/shape/shape-3.svg" alt="shape">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-7">
+                        <div class="single-service d-flex">
+                            <div class="service-icon">
+                                <img src="../assets/images/service-3.png" alt="Icon">
+                            </div>
+                            <div class="service-content media-body">
+                                <h4 class="service-title">Quality Support</h4>
+                                <p class="text">Lorem Ipsum is simply dummy tex of the printing and typesetting
+                                    industry.
+                                    Lorem Ipsum .</p>
+                            </div>
+                            <div class="shape shape-4">
+                                <img src="../assets/images/shape/shape-4.svg" alt="shape">
+                            </div>
+                            <div class="shape shape-5">
+                                <img src="../assets/images/shape/shape-5.svg" alt="shape">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-7">
+                        <div class="single-service d-flex">
+                            <div class="service-icon">
+                                <img src="../assets/images/service-1.png" alt="Icon">
+                            </div>
+                            <div class="service-content media-body">
+                                <h4 class="service-title">Highly Experienced</h4>
+                                <p class="text">Lorem Ipsum is simply dummy tex of the printing and typesetting
+                                    industry.
+                                    Lorem Ipsum .</p>
+                            </div>
+                            <div class="shape shape-1">
+                                <img src="../assets/images/shape/shape-1.svg" alt="shape">
+                            </div>
+                            <div class="shape shape-2">
+                                <img src="../assets/images/shape/shape-2.svg" alt="shape">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-7">
+                        <div class="single-service service-border d-flex">
+                            <div class="service-icon">
+                                <img src="../assets/images/service-2.png" alt="Icon">
+                            </div>
+                            <div class="service-content media-body">
+                                <h4 class="service-title">Bunch of Services</h4>
+                                <p class="text">Lorem Ipsum is simply dummy tex of the printing and typesetting
+                                    industry.
+                                    Lorem Ipsum .</p>
+                            </div>
+                            <div class="shape shape-3">
+                                <img src="../assets/images/shape/shape-3.svg" alt="shape">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="service-btn text-center pt-25 pb-15">
+                            <a class="main-btn main-btn-2" href="#">All Services</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 </section>
 {% endblock %}
