@@ -2,3 +2,5 @@
 venv/
 Eel/
 __pycache__
+*.csv
+*.xls*
