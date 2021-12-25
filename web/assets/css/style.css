@@ -17,8 +17,8 @@
     02.HEADER
     03.ABOUT
     04.GALLERY
-    05.SERVICE
-    06.PRICING
+    05.task
+    06.LOAD-FILE
     07.TESTIMONIAL
     08.BRAND
     09.BL0G
@@ -695,6 +695,17 @@ p {
     position: relative;
     top: -5px; }
 
+@media only screen and (min-width: 991px) {
+  .navbar-btn {
+    position: absolute;
+    top: 50%;
+    right: 50px;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%); } }
+
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .navbar-btn {
     position: absolute;
@@ -1060,62 +1071,62 @@ p {
   overflow: hidden; }
 
 /*===========================
-      05.SERVICE css
+      05.task css
 ===========================*/
-.service-wrapper {
+.task-wrapper {
   -webkit-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
   box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1); }
 
-.single-service {
+.single-task {
   padding: 65px 20px 30px;
   position: relative; }
-  .single-service.service-border {
+  .single-task.task-border {
     border-left: 1px solid #dedede4f;
     border-right: 1px solid #dedede4f; }
     @media only screen and (min-width: 768px) and (max-width: 991px) {
-      .single-service.service-border {
+      .single-task.task-border {
         border: 0; } }
     @media (max-width: 767px) {
-      .single-service.service-border {
+      .single-task.task-border {
         border: 0; } }
-  .single-service .service-content {
+  .single-task .task-content {
     padding-left: 25px; }
-    .single-service .service-content .service-title {
+    .single-task .task-content .task-title {
       font-size: 18px; }
-    .single-service .service-content .text {
+    .single-task .task-content .text {
       margin-top: 15px; }
-  .single-service .shape {
+  .single-task .shape {
     position: absolute; }
-    .single-service .shape.shape-1 {
+    .single-task .shape.shape-1 {
       left: 35px;
       bottom: -50px;
       -webkit-animation: rotated 15s infinite linear;
       -moz-animation: rotated 15s infinite linear;
       -o-animation: rotated 15s infinite linear;
       animation: rotated 15s infinite linear; }
-    .single-service .shape.shape-2 {
+    .single-task .shape.shape-2 {
       top: 20px;
       right: 85px;
       -webkit-animation: animationFramesOne 10s infinite linear;
       -moz-animation: animationFramesOne 10s infinite linear;
       -o-animation: animationFramesOne 10s infinite linear;
       animation: animationFramesOne 10s infinite linear; }
-    .single-service .shape.shape-3 {
+    .single-task .shape.shape-3 {
       left: 100px;
       bottom: -10px;
       -webkit-animation: rotated 15s infinite linear;
       -moz-animation: rotated 15s infinite linear;
       -o-animation: rotated 15s infinite linear;
       animation: rotated 15s infinite linear; }
-    .single-service .shape.shape-4 {
+    .single-task .shape.shape-4 {
       left: 30px;
       top: 10px;
       -webkit-animation: rotated 15s infinite linear;
       -moz-animation: rotated 15s infinite linear;
       -o-animation: rotated 15s infinite linear;
       animation: rotated 15s infinite linear; }
-    .single-service .shape.shape-5 {
+    .single-task .shape.shape-5 {
       right: 100px;
       bottom: -40px;
       -webkit-animation: animationFramesTwo 10s infinite linear;
@@ -1297,22 +1308,22 @@ p {
     -ms-transform: translate(0px, 0px) rotate(0deg);
     -o-transform: translate(0px, 0px) rotate(0deg);
     transform: translate(0px, 0px) rotate(0deg); } }
-/*===== OUR SERVICE =====*/
-.our-services-tab .nav {
+/*===== OUR task =====*/
+.our-tasks-tab .nav {
   border-bottom: 2px solid #dedede4f; }
   @media (max-width: 767px) {
-    .our-services-tab .nav {
+    .our-tasks-tab .nav {
       border-bottom: 0; } }
   @media only screen and (min-width: 576px) and (max-width: 767px) {
-    .our-services-tab .nav {
+    .our-tasks-tab .nav {
       border-bottom: 2px solid #dedede4f; } }
   @media (max-width: 767px) {
-    .our-services-tab .nav .nav-item {
+    .our-tasks-tab .nav .nav-item {
       width: 50%; } }
   @media only screen and (min-width: 576px) and (max-width: 767px) {
-    .our-services-tab .nav .nav-item {
+    .our-tasks-tab .nav .nav-item {
       width: auto; } }
-  .our-services-tab .nav .nav-item a {
+  .our-tasks-tab .nav .nav-item a {
     color: #798795;
     padding: 17px 30px;
     display: -webkit-flex;
@@ -1330,17 +1341,17 @@ p {
     -o-transition: all 0.3s ease-out 0s;
     transition: all 0.3s ease-out 0s; }
     @media only screen and (min-width: 768px) and (max-width: 991px) {
-      .our-services-tab .nav .nav-item a {
+      .our-tasks-tab .nav .nav-item a {
         padding: 17px 15px; } }
     @media (max-width: 767px) {
-      .our-services-tab .nav .nav-item a {
+      .our-tasks-tab .nav .nav-item a {
         padding: 17px 15px;
         border-bottom: 2px solid #dedede4f; } }
     @media only screen and (min-width: 576px) and (max-width: 767px) {
-      .our-services-tab .nav .nav-item a {
+      .our-tasks-tab .nav .nav-item a {
         padding: 17px 10px;
         border-bottom: 0; } }
-    .our-services-tab .nav .nav-item a::before {
+    .our-tasks-tab .nav .nav-item a::before {
       position: absolute;
       content: '';
       width: 100%;
@@ -1354,56 +1365,56 @@ p {
       -ms-transition: all 0.3s ease-out 0s;
       -o-transition: all 0.3s ease-out 0s;
       transition: all 0.3s ease-out 0s; }
-    .our-services-tab .nav .nav-item a i {
+    .our-tasks-tab .nav .nav-item a i {
       font-size: 50px; }
       @media only screen and (min-width: 768px) and (max-width: 991px) {
-        .our-services-tab .nav .nav-item a i {
+        .our-tasks-tab .nav .nav-item a i {
           font-size: 40px; } }
       @media (max-width: 767px) {
-        .our-services-tab .nav .nav-item a i {
+        .our-tasks-tab .nav .nav-item a i {
           font-size: 34px; } }
       @media only screen and (min-width: 576px) and (max-width: 767px) {
-        .our-services-tab .nav .nav-item a i {
+        .our-tasks-tab .nav .nav-item a i {
           font-size: 28px; } }
-    .our-services-tab .nav .nav-item a span {
+    .our-tasks-tab .nav .nav-item a span {
       font-size: 14px;
       font-family: "Nunito", sans-serif;
       font-weight: 500;
       padding-left: 15px; }
       @media only screen and (min-width: 576px) and (max-width: 767px) {
-        .our-services-tab .nav .nav-item a span {
+        .our-tasks-tab .nav .nav-item a span {
           padding-left: 10px; } }
-    .our-services-tab .nav .nav-item a.active {
+    .our-tasks-tab .nav .nav-item a.active {
       color: #f14836; }
-      .our-services-tab .nav .nav-item a.active::before {
+      .our-tasks-tab .nav .nav-item a.active::before {
         opacity: 1; }
-.our-services-tab .our-services-content .services-title {
+.our-tasks-tab .our-tasks-content .tasks-title {
   font-size: 40px; }
   @media (max-width: 767px) {
-    .our-services-tab .our-services-content .services-title {
+    .our-tasks-tab .our-tasks-content .tasks-title {
       font-size: 22px; } }
   @media only screen and (min-width: 576px) and (max-width: 767px) {
-    .our-services-tab .our-services-content .services-title {
+    .our-tasks-tab .our-tasks-content .tasks-title {
       font-size: 26px; } }
-  .our-services-tab .our-services-content .services-title span {
+  .our-tasks-tab .our-tasks-content .tasks-title span {
     font-weight: 400;
     display: contents; }
-.our-services-tab .our-services-content .text {
+.our-tasks-tab .our-tasks-content .text {
   margin-top: 35px; }
-.our-services-tab .our-services-content .our-services-progress .circles-text {
+.our-tasks-tab .our-tasks-content .our-tasks-progress .circles-text {
   font-size: 24px !important;
   font-weight: 700;
   color: #222;
   font-family: "Nunito", sans-serif; }
-.our-services-tab .our-services-content .our-services-progress .progress-content {
+.our-tasks-tab .our-tasks-content .our-tasks-progress .progress-content {
   padding-left: 30px; }
-  .our-services-tab .our-services-content .our-services-progress .progress-content .progress-title {
+  .our-tasks-tab .our-tasks-content .our-tasks-progress .progress-content .progress-title {
     font-size: 18px; }
 
-/*===== SERVICE 2 =====*/
-.single-service-2 .service-icon {
+/*===== task 2 =====*/
+.single-task-2 .task-icon {
   margin-top: 5px; }
-  .single-service-2 .service-icon i {
+  .single-task-2 .task-icon i {
     width: 50px;
     height: 50px;
     line-height: 50px;
@@ -1411,24 +1422,24 @@ p {
     border: 1px dashed #f14836;
     font-size: 36px;
     color: #f14836; }
-.single-service-2 .service-content {
+.single-task-2 .task-content {
   padding-left: 30px; }
-  .single-service-2 .service-content .title a {
+  .single-task-2 .task-content .title a {
     font-weight: 600;
     font-size: 18px;
     font-family: "Nunito", sans-serif;
     color: #222; }
-  .single-service-2 .service-content .text {
+  .single-task-2 .task-content .text {
     padding-top: 20px; }
 
-/*===== SERVICE 3 =====*/
-.services-3 {
+/*===== task 3 =====*/
+.tasks-3 {
   border-top: 1px solid #dedede4f; }
 
-.single-service-3 .service-icon {
+.single-task-3 .task-icon {
   display: inline-block;
   position: relative; }
-  .single-service-3 .service-icon i {
+  .single-task-3 .task-icon i {
     font-size: 40px;
     color: #fff;
     position: absolute;
@@ -1439,9 +1450,9 @@ p {
     -ms-transform: translate(-50%, -50%);
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%); }
-.single-service-3 .service-content {
+.single-task-3 .task-content {
   padding-top: 45px; }
-  .single-service-3 .service-content .service-title a {
+  .single-task-3 .task-content .task-title a {
     font-size: 24px;
     font-weight: 700;
     color: #222;
@@ -1450,11 +1461,11 @@ p {
     -ms-transition: all 0.3s ease-out 0s;
     -o-transition: all 0.3s ease-out 0s;
     transition: all 0.3s ease-out 0s; }
-    .single-service-3 .service-content .service-title a:hover {
+    .single-task-3 .task-content .task-title a:hover {
       color: #f14836; }
-  .single-service-3 .service-content .text {
+  .single-task-3 .task-content .text {
     padding-top: 15px; }
-  .single-service-3 .service-content .more {
+  .single-task-3 .task-content .more {
     color: #798795;
     font-size: 36px;
     -webkit-transition: all 0.3s ease-out 0s;
@@ -1463,29 +1474,29 @@ p {
     -o-transition: all 0.3s ease-out 0s;
     transition: all 0.3s ease-out 0s;
     margin-top: 30px; }
-    .single-service-3 .service-content .more:hover {
+    .single-task-3 .task-content .more:hover {
       color: #f14836; }
 
 /*===========================
-       06.PRICING css
+       06.LOAD-FILE css
 ===========================*/
-.single-pricing {
+.loaded-file-area {
   padding: 65px 50px 70px; }
   @media (max-width: 767px) {
-    .single-pricing {
+    .loaded-file-area {
       padding: 45px 30px 50px; } }
-  .single-pricing .pricing-price .price {
+  .loaded-file-area .load-file-price .price {
     font-size: 42px;
     color: #222;
     font-family: "Nunito", sans-serif; }
-    .single-pricing .pricing-price .price b {
+    .loaded-file-area .load-file-price .price b {
       font-weight: 800; }
-    .single-pricing .pricing-price .price .symbol {
+    .loaded-file-area .load-file-price .price .symbol {
       font-size: 18px;
       color: #f14836;
       font-weight: 700;
       font-family: "Nunito", sans-serif; }
-  .single-pricing .pricing-title {
+  .loaded-file-area .load-file-title {
     display: -webkit-flex;
     display: -moz-flex;
     display: -ms-flex;
@@ -1496,34 +1507,36 @@ p {
     -moz-justify-content: center;
     border-bottom: 1px solid #dedede4f;
     padding-bottom: 50px; }
-    .single-pricing .pricing-title .btn {
+    .loaded-file-area .load-file-title .btn {
       padding: 0 15px;
       line-height: 25px;
       border-radius: 50px;
       background-color: #4bb3f9;
       color: #fff;
       font-size: 14px; }
-    .single-pricing .pricing-title .title {
+    .loaded-file-area .load-file-title .title {
       font-weight: 600;
       font-size: 24px;
       font-family: "Nunito", sans-serif;
       padding-left: 10px; }
-  .single-pricing .pricing-list ul li {
+  .loaded-file-area .loaded-file-list ul li {
     font-size: 24px;
     color: #798795;
     margin-top: 20px; }
-  .single-pricing .pricing-btn .main-btn {
+  .loaded-file-area .loaded-file-list ul li span {
+    padding-right: 20px;}
+  .loaded-file-area .load-file-btn .main-btn {
     text-transform: uppercase; }
-    .single-pricing .pricing-btn .main-btn.main-btn-2 {
+    .loaded-file-area .load-file-btn .main-btn.main-btn-2 {
       border-color: transparent;
       color: #222; }
-  .single-pricing.pricing-color-1 .pricing-title .btn {
+  .loaded-file-area.load-file-color-1 .load-file-title .btn {
     background-color: #4bb3f9; }
-  .single-pricing.pricing-color-2 .pricing-title .btn {
+  .loaded-file-area.load-file-color-2 .load-file-title .btn {
     background-color: #f14836; }
-  .single-pricing.pricing-color-3 .pricing-title .btn {
+  .loaded-file-area.load-file-color-3 .load-file-title .btn {
     background-color: #63b85f; }
-  .single-pricing.pricing-active {
+  .loaded-file-area.load-file-active {
     -webkit-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.07);
     -moz-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.07);
     box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.07); }
@@ -2199,7 +2212,7 @@ p {
 /*# sourceMappingURL=style.css.map */
 
 /*file drop*/
-.inputFileDnD .form-control-file {
+.load-file-form .form-control-file {
   position: relative;
   width: 100%;
   height: 100%;
@@ -2210,7 +2223,7 @@ p {
   background-color: #c61c23;
   box-shadow: 0 0 5px solid currentColor;
 }
-.inputFileDnD .form-control-file:before {
+.load-file-form .form-control-file:before {
   content: attr(data-title);
   position: absolute;
   top: 0.5em;
@@ -2226,21 +2239,21 @@ p {
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   overflow: hidden;
 }
-.inputFileDnD .form-control-file:hover:before {
+.load-file-form .form-control-file:hover:before {
   border-style: solid;
   box-shadow: inset 0px 0px 0px 0.25em currentColor;
 }
 
 /*Dropdown*/
-.selectDnD {
+.task-select {
   max-width: 600px;
 }
 
-.selectDnD .title{
+.task-select .title{
   padding: 5px 3px;
   font-weight: bold;
 }
-.selectDnD .dropdownbox {
+.task-select .dropdownbox {
   width: 100%;
   border-radius: 3px;
   background-color: #fff;
@@ -2252,7 +2265,7 @@ p {
   cursor: pointer;
 }
 
-.selectDnD .dropdownbox > p {
+.task-select .dropdownbox > p {
   padding: 5px 3px;
   font-size: 1.25em;
   line-height: 1.4em;
@@ -2262,7 +2275,7 @@ p {
   -khtml-user-select: none;
 }
 
-.selectDnD ul.menu {
+.task-select ul.menu {
   position: relative;
   margin: 0 auto;
   width: 400px auto;
@@ -2283,7 +2296,7 @@ p {
   -khtml-user-select: none;
 }
 
-.selectDnD ul.menu li {
+.task-select ul.menu li {
   padding: 2px 10px;
     font-size: 1.25em;
   line-height: 1.4em;
@@ -2293,13 +2306,13 @@ p {
         transition: all 0.3s ease-in;
   border-bottom: 1px dotted rgb(254,238,223);
 }
-.selectDnD ul.menu li:hover {
+.task-select ul.menu li:hover {
   padding-left: 20px;
   color: #fde4e1;
   background: #f14836;
 }
 
-.selectDnD .menu.showMenu {
+.task-select .menu.showMenu {
   /*-moz-transform:scale(1);*/
   height: 165px;
 }

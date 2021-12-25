@@ -1,2 +1,4 @@
+.vscode
 venv/
 Eel/
+__pycache__

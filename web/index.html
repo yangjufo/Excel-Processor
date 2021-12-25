@@ -1,0 +1,613 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <!--====== Title ======-->
+    <title>Excel工具</title>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--====== Favicon Icon ======-->
+    <link rel="shortcut icon" href="assets/images/logo.png" type="image/png">
+
+    <!--====== Slick CSS ======-->
+    <link rel="stylesheet" href="assets/css/slick.css">
+
+    <!--====== Font Awesome CSS ======-->
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+
+    <!--====== Line Icons CSS ======-->
+    <link rel="stylesheet" href="assets/css/LineIcons.css">
+
+    <!--====== Animate CSS ======-->
+    <link rel="stylesheet" href="assets/css/animate.css">
+
+    <!--====== Magnific Popup CSS ======-->
+    <link rel="stylesheet" href="assets/css/magnific-popup.css">
+
+    <!--====== Bootstrap CSS ======-->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+    <!--====== Default CSS ======-->
+    <link rel="stylesheet" href="assets/css/default.css">
+
+    <!--====== Style CSS ======-->
+    <link rel="stylesheet" href="assets/css/style.css">
+
+</head>
+
+<body onload="reInitialize()">
+    <!--[if IE]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
+
+    <!--====== PRELOADER PART START ======-->
+
+    <div class="preloader">
+        <div class="loader">
+            <div class="ytp-spinner">
+                <div class="ytp-spinner-container">
+                    <div class="ytp-spinner-rotator">
+                        <div class="ytp-spinner-left">
+                            <div class="ytp-spinner-circle"></div>
+                        </div>
+                        <div class="ytp-spinner-right">
+                            <div class="ytp-spinner-circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--====== PRELOADER PART ENDS ======-->
+
+    <!--====== HEADER PART START ======-->
+
+    <header class="header-area">
+        <div class="navbar-area headroom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <nav class="navbar navbar-expand-lg">
+                            <a class="navbar-brand" href="#">
+                                <img src="assets/images/logo.png" alt="Logo">
+                            </a>
+                            <div class="header-hero-content">
+                                <h1 class="hero-title wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s"
+                                    style="font-size:28px">
+                                    <b><span>Excel</span> 工具</b>
+                                </h1>
+                            </div> <!-- header hero content -->
+                            <div class="navbar-btn d-none d-sm-inline-block" style="position: right;">
+                                <a class="main-btn" rel="nofollow" href="index.html">清除全部数据</a>
+                            </div>
+                        </nav> <!-- navbar -->
+                    </div>
+                </div>
+            </div> <!-- row -->
+        </div> <!-- container -->
+        </div> <!-- navbar area -->
+    </header>
+    <!--====== HEADER PART ENDS ======-->
+
+    <section data-scroll-index="0" id="load-file" class="load-file-area pt-115" style="height: auto;">
+        <div id="home" class="header-hero bg_cover d-lg-flex align-items-center"
+            style="background-image: url(assets/images/header-hero.jpg);">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="header-hero-content">
+                            <h1 class="hero-title wow fadeInUp" data-wow-duration="0.5s" data-wow-delay="0.2s">
+                                <b>请选择要处理的文件</b>
+                            </h1>
+                            <div class="header-singup wow fadeInUp" data-wow-duration="0.5s" data-wow-delay="0.2s">
+                                <div class="form-group load-file-form">
+                                    <input type="file" class="form-control-file text-primary font-weight-bold"
+                                        id="load-file-name"
+                                        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                                        data-title="点击添加或拖动到此处">
+                                </div>
+                            </div>
+                            <!-- partial -->
+                            <div class="header-singup wow fadeInUp" data-wow-duration="0.5s" data-wow-delay="0.2s">
+                                <input type="text" id="load-file-path" placeholder="请输入文件路径，默认为程序所在位置">
+                                <button class="main-btn" id="load-file-btn">加载</button>
+                            </div>
+                        </div> <!-- header hero content -->
+                    </div>
+                </div> <!-- row -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="loaded-file-area text-center load-file-active load-file-color-2 mt-30 wow fadeIn"
+                            data-wow-duration="0.5s" data-wow-delay="0.3s"
+                            style="visibility: visible; animation-duration: 1s; animation-delay: 0.6s; animation-name: fadeIn;">
+                            <div class="load-file-title mt-20">
+                                <h4 class="title">已加载文件列表</h4>
+                            </div>
+                            <div class="loaded-file-list pt-40">
+                                <ul id="loaded-file-list">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- container -->
+        </div> <!-- header hero -->
+    </section>
+
+    <section id="tasks" class="our-tasks-area pt-115">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-5 col-lg-6 col-md-8 col-sm-9">
+                    <div class="section-title text-center wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s"
+                        style="visibility: visible; animation-duration: 1s; animation-delay: 0.2s; animation-name: fadeInUp;">
+                        <h6 class="sub-title">任务</h6>
+                        <h4 class="title">请添加<span>要执行的任务</span></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="our-tasks-tab pt-30">
+                        <ul class="nav justify-content-center wow fadeIn" data-wow-duration="1s" data-wow-delay="0.5s"
+                            id="myTab" role="tablist"
+                            style="visibility: visible; animation-duration: 1s; animation-delay: 0.5s; animation-name: fadeIn;">
+                            <li class="nav-item">
+                                <a class="active" id="task-sum-tab" data-toggle="tab" href="#task-sum" role="tab"
+                                    aria-controls="task-sum" aria-selected="true">
+                                    <i class="lni-calculator"></i> <span>求和</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="task-match-tab" data-toggle="tab" href="#task-match" role="tab"
+                                    aria-controls="task-match" aria-selected="false">
+                                    <i class="lni-search"></i> <span>数据匹配</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent" style="height: auto;">
+                            <div class="tab-pane fade active show task" id="task-sum" role="tabpanel"
+                                aria-labelledby="task-sum-tab">
+                                <div class="task-select-pane">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="our-tasks-content mt-45 task-select">
+                                                <div class="title">
+                                                    <h4>文件</h4>
+                                                </div>
+                                                <div class="dropdownbox">
+                                                    <p class="selected-file">请选择文件</p>
+                                                </div>
+                                                <ul class="menu select-file-options" id="3">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="our-tasks-content mt-45 task-select">
+                                                <div class="title">
+                                                    <h4>表</h4>
+                                                </div>
+                                                <div class="dropdownbox">
+                                                    <p class="selected-sheet">请选择表</p>
+                                                </div>
+                                                <ul class="menu select-sheet-options">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="our-tasks-content mt-45 task-select">
+                                                <div class="title">
+                                                    <h4>分组列</h4>
+                                                </div>
+                                                <div class="dropdownbox">
+                                                    <p class="selected-group-column">请选择列</p>
+                                                </div>
+                                                <ul class="menu select-group-column-options">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="our-tasks-content mt-45 task-select">
+                                                <div class="title">
+                                                    <h4>数值列</h4>
+                                                </div>
+                                                <div class="dropdownbox">
+                                                    <p class="selected-value-column">请选择列</p>
+                                                </div>
+                                                <ul class="menu select-value-column-options">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="our-tasks-content mt-45 task-select">
+                                                <div class="title">
+                                                    <h4>分组列最小值</h4>
+                                                </div>
+                                                <div class="dropdownbox">
+                                                    <p class="selected-group-column-min-value">请选择最小值，空白表示全部</p>
+                                                </div>
+                                                <ul class="menu select-group-column-min-value-options">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="our-tasks-content mt-45 task-select">
+                                                <div class="title">
+                                                    <h4>分组列最大值</h4>
+                                                </div>
+                                                <div class="dropdownbox">
+                                                    <p class="selected-group-column-max-value">请选择最大值，空白表示全部</p>
+                                                </div>
+                                                <ul class="menu select-group-column-max-value-options">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade task" id="task-match" role="tabpanel"
+                                aria-labelledby="task-match-tab">
+                                <div class="task-select-pane">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="our-tasks-content mt-45 task-select">
+                                                <div class="title">
+                                                    <h4>文件1</h4>
+                                                </div>
+                                                <div class="dropdownbox">
+                                                    <p class="selected-file">请选择文件</p>
+                                                </div>
+                                                <ul class="menu select-file-options" id="1">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="our-tasks-content mt-45 task-select">
+                                                <div class="title">
+                                                    <h4>表</h4>
+                                                </div>
+                                                <div class="dropdownbox">
+                                                    <p class="selected-sheet">请选择表</p>
+                                                </div>
+                                                <ul class="menu select-sheet-options">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="our-tasks-content mt-45 task-select">
+                                                <div class="title">
+                                                    <h4>匹配列</h4>
+                                                </div>
+                                                <div class="dropdownbox">
+                                                    <p class="selected-value-column">请选择列</p>
+                                                </div>
+                                                <ul class="menu select-value-column-options">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="our-tasks-content mt-45 task-select">
+                                                <div class="title">
+                                                    <h4>匹配条件</h4>
+                                                </div>
+                                                <div class="dropdownbox">
+                                                    <p class="selected-match-condidtion">请选择条件</p>
+                                                </div>
+                                                <ul class="menu select-match-column-options">
+                                                    <li class="select-simple-option">有</li>
+                                                    <li class="select-simple-option">无</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="our-tasks-content mt-45 task-select">
+                                                <div class="title">
+                                                    <h4>筛选列</h4>
+                                                </div>
+                                                <div class="dropdownbox">
+                                                    <p class="selected-group-column">请选择列</p>
+                                                </div>
+                                                <ul class="menu select-group-column-options">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="our-tasks-content mt-45 task-select">
+                                                <div class="title">
+                                                    <h4>筛选列最小值</h4>
+                                                </div>
+                                                <div class="dropdownbox">
+                                                    <p class="selected-group-column-min-value">请选择最小值，空白表示全部</p>
+                                                </div>
+                                                <ul class="menu select-group-column-min-value-options">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="our-tasks-content mt-45 task-select">
+                                                <div class="title">
+                                                    <h4>筛选列最大值</h4>
+                                                </div>
+                                                <div class="dropdownbox">
+                                                    <p class="selected-group-column-max-value">请选择最大值，空白表示全部</p>
+                                                </div>
+                                                <ul class="menu select-group-column-max-value-options">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="task-select-pane">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="our-tasks-content mt-45 task-select">
+                                                <div class="title">
+                                                    <h4>文件2</h4>
+                                                </div>
+                                                <div class="dropdownbox">
+                                                    <p class="selected-file">请选择文件</p>
+                                                </div>
+                                                <ul class="menu select-file-options" id="1">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="our-tasks-content mt-45 task-select">
+                                                <div class="title">
+                                                    <h4>表</h4>
+                                                </div>
+                                                <div class="dropdownbox">
+                                                    <p class="selected-sheet">请选择表</p>
+                                                </div>
+                                                <ul class="menu select-sheet-options">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="our-tasks-content mt-45 task-select">
+                                                <div class="title">
+                                                    <h4>匹配列</h4>
+                                                </div>
+                                                <div class="dropdownbox">
+                                                    <p class="selected-value-column">请选择列</p>
+                                                </div>
+                                                <ul class="menu select-value-column-options">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="our-tasks-content mt-45 task-select">
+                                                <div class="title">
+                                                    <h4>匹配条件</h4>
+                                                </div>
+                                                <div class="dropdownbox">
+                                                    <p class="selected-match-condidtion">请选择条件</p>
+                                                </div>
+                                                <ul class="menu select-match-column-options">
+                                                    <li class="select-simple-option">有</li>
+                                                    <li class="select-simple-option">无</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="our-tasks-content mt-45 task-select">
+                                                <div class="title">
+                                                    <h4>筛选列</h4>
+                                                </div>
+                                                <div class="dropdownbox">
+                                                    <p class="selected-group-column">请选择列</p>
+                                                </div>
+                                                <ul class="menu select-group-column-options">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="our-tasks-content mt-45 task-select">
+                                                <div class="title">
+                                                    <h4>筛选列最小值</h4>
+                                                </div>
+                                                <div class="dropdownbox">
+                                                    <p class="selected-group-column-min-value">请选择最小值，空白表示全部</p>
+                                                </div>
+                                                <ul class="menu select-group-column-min-value-options">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="our-tasks-content mt-45 task-select">
+                                                <div class="title">
+                                                    <h4>筛选列最大值</h4>
+                                                </div>
+                                                <div class="dropdownbox">
+                                                    <p class="selected-group-column-max-value">请选择最大值，空白表示全部</p>
+                                                </div>
+                                                <ul class="menu select-group-column-max-value-options">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="inputDnD our-tasks-content mt-45">
+                                        <div class="title">
+                                            <h4>输出文件路径</h4>
+                                        </div>
+                                        <input type="text" id="task-output-file-path" placeholder="请输入输出文件路径">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="inputDnD our-tasks-content mt-45">
+                                        <div class="title">
+                                            <h4>输出表名</h4>
+                                        </div>
+                                        <input type="text" id="task-output-sheet-name" placeholder="请输入表名">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="task-btn text-center pt-25 pb-15">
+                                    <a class="main-btn main-btn-2">添加任务</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container" style="padding-top: 50px;">
+            <div class="row">
+                <div class="col-lg-6 col-md-8">
+                    <div class="section-title wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s"
+                        style="visibility: visible; animation-duration: 1s; animation-delay: 0.2s; animation-name: fadeInUp;">
+                        <h6 class="sub-title">已添加</h6>
+                        <h4 class="title"><span>任务列表</span></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="task-wrapper mt-60 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.6s"
+                style="visibility: visible; animation-duration: 1s; animation-delay: 0.6s; animation-name: fadeInUp;">
+                <div class="row no-gutters justify-content-center">
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="task-btn text-center pt-25 pb-15">
+                            <a class="main-btn main-btn-2">开始执行</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--====== FOOTER PART START ======-->
+
+    <footer id=" footer" class="footer-area bg_cover" style="background-image: url(assets/images/footer-bg.jpg)">
+        <div class="container">
+            <div class="footer-widget pt-30 pb-70">
+                <div class="row">
+                    <div class="col-lg-5 col-sm-6 order-sm-1 order-lg-1">
+                        <div class="footer-about pt-40">
+                            <a href="#">
+                                <img src="assets/images/logo.png" alt="Logo">
+                            </a>
+                            <p class="text">Excel工具库提供一些简单的Excel数据处理功能。</p>
+                            <h5 class="contact-title pb-10" style="padding-top: 30px;"><i
+                                    class="lni-github-original"></i><a
+                                    href="https://github.com/yangjufo/Excel-Processor" , target="_blank" ,
+                                    style="padding-left: 10px;">下载源码</a>
+                            </h5>
+                        </div> <!-- footer about -->
+                    </div>
+                    <div class="col-lg-6 col-sm-6 order-sm-3 order-lg-2">
+                        <div class="footer-about pt-40">
+                            <div class="footer-title">
+                                <h5 class="title">声明</h5>
+                            </div>
+                            <p class="text">版权所有 (c) 2021-2022 <a
+                                    href="mailto: yangjufo@gmail.com">yangjufo@gmail.com</a></p>
+                            <p class="text">特此向任何得到本软件副本或相关文档的人授权：被授权人有权使用、复制、修改、
+                                合并、出版、发布、散布、再授权和/或贩售软件及软件的副本，及授予被供应人同等权利，只需服从以下义务：
+                            </p>
+
+                            <p class="text"></p>在软件和软件的所有副本中都必须包含以上版权声明和本许可声明。</p>
+
+                            <p class="text"></p>
+                            该软件是"按原样"提供的，没有任何形式的明示或暗示，包括但不限于为特定目的和不侵权的适销性和适用性的保证担保。在任何情况下，作者或版权持有人，都无权要求
+                            任何索赔，或有关损害赔偿的其他责任。无论在本软件的使用上或其他买卖交易中，是否涉及合同，侵权或其他行为。</p>
+                        </div> <!-- footer link -->
+                    </div>
+                </div> <!-- row -->
+            </div> <!-- footer widget -->
+            <div class="footer-copyright text-center">
+                <p class="text">© 2022 Crafted by <a href="https://uideck.com" rel="nofollow">UIdeck</a> All Rights
+                    Reserved.
+                </p>
+            </div>
+        </div> <!-- container -->
+    </footer>
+
+    <!--====== FOOTER PART ENDS ======-->
+
+    <!--====== BACK TOP TOP PART START ======-->
+
+    <a href="#" class="back-to-top"><i class="lni-chevron-up"></i></a>
+
+    <!--====== BACK TOP TOP PART ENDS ======-->
+
+
+
+
+    <!--====== Jquery js ======-->
+    <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="assets/js/vendor/modernizr-3.7.1.min.js"></script>
+
+    <!--====== Bootstrap js ======-->
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+
+    <!--====== Slick js ======-->
+    <script src="assets/js/slick.min.js"></script>
+
+    <!--====== Isotope js ======-->
+    <script src="assets/js/imagesloaded.pkgd.min.js"></script>
+    <script src="assets/js/isotope.pkgd.min.js"></script>
+
+    <!--====== Counter Up js ======-->
+    <script src="assets/js/waypoints.min.js"></script>
+    <script src="assets/js/jquery.counterup.min.js"></script>
+
+    <!--====== Circles js ======-->
+    <script src="assets/js/circles.min.js"></script>
+
+    <!--====== Appear js ======-->
+    <script src="assets/js/jquery.appear.min.js"></script>
+
+    <!--====== WOW js ======-->
+    <script src="assets/js/wow.min.js"></script>
+
+    <!--====== Headroom js ======-->
+    <script src="assets/js/headroom.min.js"></script>
+
+    <!--====== Jquery Nav js ======-->
+    <script src="assets/js/jquery.nav.js"></script>
+
+    <!--====== Scroll It js ======-->
+    <script src="assets/js/scrollIt.min.js"></script>
+
+    <!--====== Magnific Popup js ======-->
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+
+    <!--====== File upload js ======-->
+    <script type='text/javascript' src="assets/js/excel-tool.js"></script>
+
+    <!--====== Eel js ======-->
+    <script type='text/javascript' src='/eel.js'></script>
+
+    <!--====== Main js ======-->
+    <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>

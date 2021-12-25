@@ -136,10 +136,10 @@ $(function () {
     });
 
 
-    //=====  services progress
+    //=====  tasks progress
 
-    if ($('.our-services-progress').length) {
-        $('.our-services-progress').appear(function () {
+    if ($('.our-tasks-progress').length) {
+        $('.our-tasks-progress').appear(function () {
             Circles.create({
                 id: 'circles-1',
                 radius: 50,
@@ -157,8 +157,8 @@ $(function () {
         });
     }
 
-    if ($('.our-services-progress').length) {
-        $('.our-services-progress').appear(function () {
+    if ($('.our-tasks-progress').length) {
+        $('.our-tasks-progress').appear(function () {
             Circles.create({
                 id: 'circles-2',
                 radius: 50,
@@ -176,8 +176,8 @@ $(function () {
         });
     }
 
-    if ($('.our-services-progress').length) {
-        $('.our-services-progress').appear(function () {
+    if ($('.our-tasks-progress').length) {
+        $('.our-tasks-progress').appear(function () {
             Circles.create({
                 id: 'circles-3',
                 radius: 50,
@@ -195,8 +195,8 @@ $(function () {
         });
     }
 
-    if ($('.our-services-progress').length) {
-        $('.our-services-progress').appear(function () {
+    if ($('.our-tasks-progress').length) {
+        $('.our-tasks-progress').appear(function () {
             Circles.create({
                 id: 'circles-4',
                 radius: 50,
