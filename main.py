@@ -4,11 +4,13 @@ import pathlib
 from random import randint
 from collections import defaultdict
 from objects.file import BaseFile, CsvFile, XlsFile
+from objects.task import BaseTask
 
 input_file_map = defaultdict(BaseFile)
 prev_output_path = str(pathlib.Path().resolve() /
                        "结果{0}.xlsx".format(randint(1, 10000)))
 prev_output_sheet_map = defaultdict(int)
+output_task_map = defaultdict(BaseTask)
 
 
 @eel.expose
@@ -98,6 +100,11 @@ def delete_file(file_path):
     global input_file_map
     if file_path in input_file_map:
         del input_file_map[file_path]
+
+
+@ eel.expose
+def add_task(task_type, task_settings):
+    global output_task_map
 
 
 if __name__ == "__main__":

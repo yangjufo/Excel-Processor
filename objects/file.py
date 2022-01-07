@@ -4,44 +4,46 @@ from datetime import datetime
 
 # file class
 
+
 class BaseFile():
     def __init__(self, path) -> None:
         self.path = path
-        self.sheet_names = list()
-        self.headers = list()
-        self.column_values_map = dict()
+        self.__sheet_names = list()
+        self.__headers = list()
+        self.__column_values_map = dict()
+
+    # read headers from child class
+    def __read_headers(self, sheet_name):
+        return None
+
+    # read column values from child class
+    def __read_column_values(self, sheet_name, column_index):
+        return None
 
     def get_sheet_names(self):
         return [True, []]
 
-    # read headers from child class
-    def read_headers(self, sheet_name):
-        return None
-
     def get_headers(self, sheet_name):
-        if len(self.headers) == 0:
-            headers_frame = self.read_headers(sheet_name)
+        if len(self.__headers) == 0:
+            headers_frame = self.__read_headers(sheet_name)
             index = 0
             for c in headers_frame.values.tolist()[0]:
-                self.headers.append(str(index) + " " + str(c))
+                self.__headers.append(str(index) + " " + str(c))
                 index += 1
-        return [True, self.headers]
-
-    # read column values from child class
-    def read_column_values(self, sheet_name, column_index):
-        return None
+        return [True, self.__headers]
 
     def get_column_values(self, sheet_name, column_index):
-        if column_index not in self.column_values_map:
-            column_values_frame = self.read_column_values(sheet_name, column_index)
+        if column_index not in self.__column_values_map:
+            column_values_frame = self.__read_column_values(
+                sheet_name, column_index)
             cols = set()
             for c in column_values_frame.values.tolist():
                 if isinstance(c[0], datetime):
                     cols.add(c[0].strftime('%Y-%m-%d'))
                 else:
                     cols.add(str(c[0]))
-            self.column_values_map[column_index] = sorted(cols)
-        return [True, self.column_values_map[column_index]]
+            self.__column_values_map[column_index] = sorted(cols)
+        return [True, self.__column_values_map[column_index]]
 
 
 # CSV file
@@ -55,6 +57,7 @@ class CsvFile(BaseFile):
     def read_column_values(self, sheet_name, column_index):
         return pd.read_csv(self.path, usecols=[column_index])
 
+
 # XLS, XLSX file
 class XlsFile(BaseFile):
     def __init__(self, path) -> None:
@@ -62,7 +65,8 @@ class XlsFile(BaseFile):
 
     def get_sheet_names(self):
         if len(self.sheet_names) == 0:
-            self.sheet_names = load_workbook(self.path, read_only=True).sheetnames
+            self.sheet_names = load_workbook(
+                self.path, read_only=True).sheetnames
         return [True, self.sheet_names]
 
     def read_headers(self, sheet_name):

@@ -1096,6 +1096,8 @@ p {
       font-size: 18px; }
     .single-task .task-content .text {
       margin-top: 15px; }
+    .single-task .task-content .text span {
+      font-weight: 700; }
   .single-task .shape {
     position: absolute; }
     .single-task .shape.shape-1 {

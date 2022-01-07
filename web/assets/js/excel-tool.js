@@ -24,8 +24,8 @@ $('#load-file-btn').click(async function () {
     $('#load-file-name')[0].setAttribute('data-title', '点击添加或拖动到此处');
 
     // add file to loaded file list
-    let uploadedFileDelButton = $($.parseHTML('<a>删除</a>')).addClass('delete-file-btn').addClass('main-btn').addClass('main-btn-2')[0];
-    let uploadedFileElem = $($.parseHTML('<li></li>'))
+    let uploadedFileDelButton = $(('<a>删除</a>')).addClass('delete-file-btn').addClass('main-btn').addClass('main-btn-2')[0];
+    let uploadedFileElem = $(('<li></li>'))
         .append($('<span></span>').text(ret[1]))
         .append(uploadedFileDelButton)[0];
     $('#loaded-file-list').append(uploadedFileElem);
@@ -35,7 +35,7 @@ $('#load-file-btn').click(async function () {
 
     // add file to file select options
     for (let selectFileOptions of $('.select-file-options')) {
-        selectFileOptions.append($($.parseHTML('<li></li>')).text(ret[1]).addClass('select-file-option')[0]);
+        selectFileOptions.append($(('<li></li>')).text(ret[1]).addClass('select-file-option')[0]);
     }
     // add click event
     $('.select-file-option').click(updateSelectSheetOptions);
@@ -47,7 +47,7 @@ async function resetTaskSelection() {
         let all_files = await eel.get_all_files()();
         $(selectFileOptions).empty();
         for (let index = 0; index < all_files.length; ++index) {
-            selectFileOptions.append($($.parseHTML('<li></li>')).text(all_files[index]).addClass('select-file-option')[0]);
+            selectFileOptions.append($(('<li></li>')).text(all_files[index]).addClass('select-file-option')[0]);
         }
         resetMenu(selectFileOptions, "请选择文件")
         // add click event
@@ -83,12 +83,17 @@ async function deleteFile() {
     $(this).parent().remove();
 }
 
-function getTaskSelectPane(elem) {
-    let taskSelectPane = $(elem);
-    while (!taskSelectPane.hasClass("task-select-pane")) {
-        taskSelectPane = taskSelectPane.parent();
+function getElementByClassName(elem, className) {
+    let curr = $(elem);
+    while (!curr.hasClass(className)) {
+        curr = curr.parent();
     }
-    return taskSelectPane;
+
+    return curr;
+}
+
+function getTaskSelectPane(elem) {
+    return getElementByClassName(elem, "task-select-pane");
 }
 
 async function updateSelectSheetOptions() {
@@ -108,7 +113,7 @@ async function updateSelectSheetOptions() {
     // add sheet name to select sheet options
     selectSheetOptions = taskSelectPane.find('.select-sheet-options');
     for (let index = 0; index < ret[1].length; ++index) {
-        selectSheetOptions.append($($.parseHTML('<li></li>')).text(ret[1][index]).addClass('select-sheet-option')[0]);
+        selectSheetOptions.append($(('<li></li>')).text(ret[1][index]).addClass('select-sheet-option')[0]);
     }
 
     // add click event
@@ -151,8 +156,8 @@ async function updateSelectColumnOptionsWithSheet(elem) {
     let selectGroupColumnOptions = taskSelectPane.find('.select-group-column-options');
     let selectValueColumnOptions = taskSelectPane.find('.select-value-column-options');
     for (let index = 0; index < ret[1].length; ++index) {
-        selectGroupColumnOptions.append($($.parseHTML('<li></li>')).text(ret[1][index]).addClass('select-group-column-option')[0]);
-        selectValueColumnOptions.append($($.parseHTML('<li></li>')).text(ret[1][index]).addClass('select-value-column-option')[0]);
+        selectGroupColumnOptions.append($(('<li></li>')).text(ret[1][index]).addClass('select-group-column-option')[0]);
+        selectValueColumnOptions.append($(('<li></li>')).text(ret[1][index]).addClass('select-value-column-option')[0]);
     }
 
     // add click event
@@ -190,8 +195,8 @@ async function updateSelectGroupColumnValueOptions() {
     let selectGroupColumnMinValueOptions = taskSelectPane.find('.select-group-column-min-value-options');
     let selectGroupColumnMaxValueOptions = taskSelectPane.find('.select-group-column-max-value-options');
     for (let index = 0; index < ret[1].length; ++index) {
-        selectGroupColumnMinValueOptions.append($($.parseHTML('<li></li>')).text(ret[1][index]).addClass('select-group-column-min-value-option')[0]);
-        selectGroupColumnMaxValueOptions.prepend($($.parseHTML('<li></li>')).text(ret[1][index]).addClass('select-group-column-max-value-option')[0]);
+        selectGroupColumnMinValueOptions.append($(('<li></li>')).text(ret[1][index]).addClass('select-group-column-min-value-option')[0]);
+        selectGroupColumnMaxValueOptions.prepend($(('<li></li>')).text(ret[1][index]).addClass('select-group-column-max-value-option')[0]);
     }
 }
 
@@ -214,7 +219,7 @@ $('.dropdownbox').click(function () {
     if ($(this).parent().find('.menu').hasClass("showMenu")) {
         $(this).parent().find('.menu').removeClass("showMenu");
         $(this).parent().find('.menu').css("height", "0");
-        return
+        return;
     }
     $('.menu').css("height", "0");
     $('.menu').removeClass("showMenu");
@@ -225,4 +230,42 @@ $('.dropdownbox').click(function () {
         $(this).parent().css("height", "0");
         $(this).parent().removeClass("showMenu");
     });
+});
+
+const taskAnimations = [
+    ['<div class="task-icon"><img src="assets/images/task-1.png" alt="Icon"></div>',
+        ['<div class="shape shape-1"><img src="assets/images/shape/shape-1.svg" alt="shape"></div>',
+            '<div class="shape shape-2"><img src="assets/images/shape/shape-2.svg" alt="shape"></div>']],
+    ['<div class="task-icon"><img src="assets/images/task-2.png" alt="Icon"></div>',
+        ['<div class="shape shape-3"><img src="assets/images/shape/shape-3.svg" alt="shape"></div>']],
+    ['<div class="task-icon"><img src="assets/images/task-3.png" alt="Icon"></div>',
+        ['<div class="shape shape-4"><img src="assets/images/shape/shape-4.svg" alt="shape"></div>',
+            '<div class="shape shape-5"><img src="assets/images/shape/shape-5.svg" alt="shape"></div>']]
+];
+
+var currTaskAnimation = 0;
+
+$('#add-task-btn').click(async function () {
+    let taskType = getElementByClassName(this, "task-select-content").find('.active').attr('id')
+    let taskTitle = "未知", inputPaths = "未知", outputPath = "未知";
+    if (taskType == "task-sum") {
+        taskTitle = "求和";
+    } else {
+        taskTitle = "数据匹配"
+    }
+    let taskItem = $('<div class="single-task d-flex"></div>')
+        .append($(taskAnimations[currTaskAnimation][0])) // task icon
+        .append($('<div class="task-content media-body"></div>')
+            .append($('<h4 class="task-title"></h4>').text(taskTitle)) // task title
+            .append($('<p><span>输入： </span> ' + inputPaths + '</p>').addClass('text')) // input path
+            .append($('<p><span>输出： </span> ' + outputPath + '</p>').addClass('text'))); // output path
+
+    // add shape
+    for (let shape of taskAnimations[currTaskAnimation][1]) {
+        taskItem.append($(shape))
+    }
+
+    $('#added-task-list').append($('<div class="col-lg-4 col-md-7"></div>').append(taskItem))
+
+    currTaskAnimation = (currTaskAnimation + 1) % (taskAnimations.length)
 });

@@ -169,7 +169,7 @@
                                 </a>
                             </li>
                         </ul>
-                        <div class="tab-content" id="myTabContent" style="height: auto;">
+                        <div class="tab-content task-select-content" id="myTabContent" style="height: auto;">
                             <div class="tab-pane fade active show task" id="task-sum" role="tabpanel"
                                 aria-labelledby="task-sum-tab">
                                 <div class="task-select-pane">
@@ -469,7 +469,7 @@
                             </div>
                             <div class="col-lg-12">
                                 <div class="task-btn text-center pt-25 pb-15">
-                                    <a class="main-btn main-btn-2">添加任务</a>
+                                    <a class="main-btn main-btn-2" id="add-task-btn">添加任务</a>
                                 </div>
                             </div>
                         </div>
@@ -489,12 +489,12 @@
             </div>
             <div class="task-wrapper mt-60 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.6s"
                 style="visibility: visible; animation-duration: 1s; animation-delay: 0.6s; animation-name: fadeInUp;">
-                <div class="row no-gutters justify-content-center">
+                <div class="row no-gutters justify-content-center" id="added-task-list">
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="task-btn text-center pt-25 pb-15">
-                            <a class="main-btn main-btn-2">开始执行</a>
+                            <a class="main-btn main-btn-2" id="run-task-btn">开始执行</a>
                         </div>
                     </div>
                 </div>
