@@ -1,5 +1,16 @@
+var selectPlaceHolders = {
+    '.select-file-options': "请选择文件",
+    '.select-sheet-options': "请选择表",
+    '.select-group-column-options': "请选择列",
+    '.select-value-column-options': "请选择列",
+    '.select-group-column-min-value-options': "请选择最小值，空白表示全部",
+    '.select-group-column-max-value-options': "请选择最大值，空白表示全部",
+    '.selected-match-condition': "请选择条件"
+};
+
 async function reInitialize() {
     await eel.re_initialize();
+    await resetTaskSelection();
     let ret = await eel.get_next_output_path()();
     $('#task-output-file-path')[0].value = ret[0];
     $('#task-output-sheet-name')[0].value = ret[1];
@@ -49,29 +60,32 @@ async function resetTaskSelection() {
         for (let index = 0; index < all_files.length; ++index) {
             selectFileOptions.append($(('<li></li>')).text(all_files[index]).addClass('select-file-option')[0]);
         }
-        resetMenu(selectFileOptions, "请选择文件")
+        resetMenu(selectFileOptions, selectPlaceHolders['.select-file-options'])
         // add click event
         $('.select-file-option').click(updateSelectSheetOptions);
     }
     for (let selectSheetOptions of $('.select-sheet-options')) {
         $(selectSheetOptions).empty();
-        resetMenu(selectSheetOptions, "请选择表")
+        resetMenu(selectSheetOptions, selectPlaceHolders['.select-sheet-options'])
     }
     for (let selectGroupColumnOptions of $('.select-group-column-options')) {
         $(selectGroupColumnOptions).empty();
-        resetMenu(selectGroupColumnOptions, "请选择列")
+        resetMenu(selectGroupColumnOptions, selectPlaceHolders['.select-group-column-options'])
     }
     for (let selectValueColumnOptions of $('.select-value-column-options')) {
         $(selectValueColumnOptions).empty();
-        resetMenu(selectValueColumnOptions, "请选择列")
-    };
+        resetMenu(selectValueColumnOptions, selectPlaceHolders['.select-value-column-options'])
+    }
     for (let selectGroupColumnMinValueOptions of $('.select-group-column-min-value-options')) {
         $(selectGroupColumnMinValueOptions).empty();
-        resetMenu(selectGroupColumnMinValueOptions, "请选择列")
+        resetMenu(selectGroupColumnMinValueOptions, selectPlaceHolders['.select-group-column-min-value-options'])
     }
     for (let selectGroupColumnMaxValueOptions of $('.select-group-column-max-value-options')) {
         $(selectGroupColumnMaxValueOptions).empty();
-        resetMenu(selectGroupColumnMaxValueOptions, "请选择列")
+        resetMenu(selectGroupColumnMaxValueOptions, selectPlaceHolders['.select-group-column-max-value-options'])
+    }
+    for (let selectMatchCondition of $('.selected-match-condition')) {
+        $(selectMatchCondition).text(selectPlaceHolders['.selected-match-condition']).css("color", '#798795');
     };
 }
 
@@ -246,13 +260,30 @@ const taskAnimations = [
 var currTaskAnimation = 0;
 
 $('#add-task-btn').click(async function () {
-    let taskType = getElementByClassName(this, "task-select-content").find('.active').attr('id')
-    let taskTitle = "未知", inputPaths = "未知", outputPath = "未知";
+    let taskSelectPane = getElementByClassName(this, "task-select-content").find('.active');
+    let taskType = $(taskSelectPane).attr('id')
+    let taskTitle = "未知", taskSettings = { 'selects': [] };
+    // task selects
     if (taskType == "task-sum") {
         taskTitle = "求和";
-    } else {
+        taskSettings['task-type'] = "sum";
+        let taskSelectSettings = {}
+    } else if (taskType == "task-data-match") {
         taskTitle = "数据匹配"
     }
+
+    // output path
+    if (!$('#task-output-file-path')[0].value.trim().endsWith(".xlsx")) {
+        alert("输出文件后缀名必须是[.xlsx]！");
+        return;
+    }
+    taskSettings['output-file-path'] = $('#task-output-file-path')[0].value.trim();
+    if ($('#task-output-sheet-name')[0].value.trim() == "") {
+        alert("输出表名不能为空！");
+        return;
+    }
+    taskSettings['output-sheet-name'] = $('#task-output-sheet-name')[0].value.trim();
+
     let taskItem = $('<div class="single-task d-flex"></div>')
         .append($(taskAnimations[currTaskAnimation][0])) // task icon
         .append($('<div class="task-content media-body"></div>')

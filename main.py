@@ -103,7 +103,7 @@ def delete_file(file_path):
 
 
 @ eel.expose
-def add_task(task_type, task_settings):
+def add_task(task_settings_json):
     global output_task_map
 
 

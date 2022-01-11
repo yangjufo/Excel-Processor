@@ -18,26 +18,26 @@ class BaseSelectSettings():
         self.group_column_max_value = self.__select_settings['group-column-max-value']
 
 
-class MatchSelectSettings(BaseSelectSettings):
+class DataMatchSelectSettings(BaseSelectSettings):
     def __init__(self, select_settings_json, input_file_map) -> None:
         super().__init__(select_settings_json, input_file_map)
         self.match_condition = self.__select_settings['match-condition']
 
 
 class BaseTask():
-    def __init__(self, task_settings_json) -> None:
-        self.__task_settings = json.loads(task_settings_json)
+    def __init__(self, task_settings) -> None:
+        self.__task_settings = json.loads(task_settings)
         self.__selects = list()
-        self.__output_path = self.__task_settings['output-path']
-        self.__output_sheet = self.__task_settings['output-sheet']
+        self.__output_path = self.__task_settings['output-file-path']
+        self.__output_sheet = self.__task_settings['output-sheet-name']
 
     def run():
         pass
 
 
 class SumTask():
-    def __init__(self, task_settings_json, input_file_map) -> None:
-        super().__init__(task_settings_json)
+    def __init__(self, task_settings, input_file_map) -> None:
+        super().__init__(task_settings)
         for select_settings in self.__task_settings['selects']:
             self.__selects.append(BaseSelectSettings(
                 select_settings, input_file_map))
@@ -46,11 +46,11 @@ class SumTask():
         pass
 
 
-class MatchTask():
-    def __init__(self, task_settings_json, input_file_map) -> None:
-        super().__init__(task_settings_json)
+class DataMatchTask():
+    def __init__(self, task_settings, input_file_map) -> None:
+        super().__init__(task_settings)
         for select_settings in self.__task_settings['selects']:
-            self.__selects.append(MatchSelectSettings(
+            self.__selects.append(DataMatchSelectSettings(
                 select_settings, input_file_map))
 
     def run():

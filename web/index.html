@@ -163,8 +163,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a id="task-match-tab" data-toggle="tab" href="#task-match" role="tab"
-                                    aria-controls="task-match" aria-selected="false">
+                                <a id="task-data-match-tab" data-toggle="tab" href="#task-data-match" role="tab"
+                                    aria-controls="task-data-match" aria-selected="false">
                                     <i class="lni-search"></i> <span>数据匹配</span>
                                 </a>
                             </li>
@@ -180,7 +180,7 @@
                                                     <h4>文件</h4>
                                                 </div>
                                                 <div class="dropdownbox">
-                                                    <p class="selected-file">请选择文件</p>
+                                                    <p class="selected-file"></p>
                                                 </div>
                                                 <ul class="menu select-file-options" id="3">
                                                 </ul>
@@ -192,7 +192,7 @@
                                                     <h4>表</h4>
                                                 </div>
                                                 <div class="dropdownbox">
-                                                    <p class="selected-sheet">请选择表</p>
+                                                    <p class="selected-sheet"></p>
                                                 </div>
                                                 <ul class="menu select-sheet-options">
                                                 </ul>
@@ -206,7 +206,7 @@
                                                     <h4>分组列</h4>
                                                 </div>
                                                 <div class="dropdownbox">
-                                                    <p class="selected-group-column">请选择列</p>
+                                                    <p class="selected-group-column"></p>
                                                 </div>
                                                 <ul class="menu select-group-column-options">
                                                 </ul>
@@ -218,7 +218,7 @@
                                                     <h4>数值列</h4>
                                                 </div>
                                                 <div class="dropdownbox">
-                                                    <p class="selected-value-column">请选择列</p>
+                                                    <p class="selected-value-column"></p>
                                                 </div>
                                                 <ul class="menu select-value-column-options">
                                                 </ul>
@@ -232,7 +232,7 @@
                                                     <h4>分组列最小值</h4>
                                                 </div>
                                                 <div class="dropdownbox">
-                                                    <p class="selected-group-column-min-value">请选择最小值，空白表示全部</p>
+                                                    <p class="selected-group-column-min-value"></p>
                                                 </div>
                                                 <ul class="menu select-group-column-min-value-options">
                                                 </ul>
@@ -244,7 +244,7 @@
                                                     <h4>分组列最大值</h4>
                                                 </div>
                                                 <div class="dropdownbox">
-                                                    <p class="selected-group-column-max-value">请选择最大值，空白表示全部</p>
+                                                    <p class="selected-group-column-max-value"></p>
                                                 </div>
                                                 <ul class="menu select-group-column-max-value-options">
                                                 </ul>
@@ -253,9 +253,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade task" id="task-match" role="tabpanel"
-                                aria-labelledby="task-match-tab">
-                                <div class="task-select-pane">
+                            <div class="tab-pane fade task" id="task-data-match" role="tabpanel"
+                                aria-labelledby="task-data-match-tab">
+                                <div class="task-select-pane" id="task-data-match-select-1">
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="our-tasks-content mt-45 task-select">
@@ -263,7 +263,7 @@
                                                     <h4>文件1</h4>
                                                 </div>
                                                 <div class="dropdownbox">
-                                                    <p class="selected-file">请选择文件</p>
+                                                    <p class="selected-file"></p>
                                                 </div>
                                                 <ul class="menu select-file-options" id="1">
                                                 </ul>
@@ -275,7 +275,7 @@
                                                     <h4>表</h4>
                                                 </div>
                                                 <div class="dropdownbox">
-                                                    <p class="selected-sheet">请选择表</p>
+                                                    <p class="selected-sheet"></p>
                                                 </div>
                                                 <ul class="menu select-sheet-options">
                                                 </ul>
@@ -289,7 +289,7 @@
                                                     <h4>匹配列</h4>
                                                 </div>
                                                 <div class="dropdownbox">
-                                                    <p class="selected-value-column">请选择列</p>
+                                                    <p class="selected-value-column"></p>
                                                 </div>
                                                 <ul class="menu select-value-column-options">
                                                 </ul>
@@ -301,7 +301,7 @@
                                                     <h4>匹配条件</h4>
                                                 </div>
                                                 <div class="dropdownbox">
-                                                    <p class="selected-match-condidtion">请选择条件</p>
+                                                    <p class="selected-match-condition"></p>
                                                 </div>
                                                 <ul class="menu select-match-column-options">
                                                     <li class="select-simple-option">有</li>
@@ -317,7 +317,7 @@
                                                     <h4>筛选列</h4>
                                                 </div>
                                                 <div class="dropdownbox">
-                                                    <p class="selected-group-column">请选择列</p>
+                                                    <p class="selected-group-column"></p>
                                                 </div>
                                                 <ul class="menu select-group-column-options">
                                                 </ul>
@@ -331,7 +331,7 @@
                                                     <h4>筛选列最小值</h4>
                                                 </div>
                                                 <div class="dropdownbox">
-                                                    <p class="selected-group-column-min-value">请选择最小值，空白表示全部</p>
+                                                    <p class="selected-group-column-min-value"></p>
                                                 </div>
                                                 <ul class="menu select-group-column-min-value-options">
                                                 </ul>
@@ -343,7 +343,7 @@
                                                     <h4>筛选列最大值</h4>
                                                 </div>
                                                 <div class="dropdownbox">
-                                                    <p class="selected-group-column-max-value">请选择最大值，空白表示全部</p>
+                                                    <p class="selected-group-column-max-value"></p>
                                                 </div>
                                                 <ul class="menu select-group-column-max-value-options">
                                                 </ul>
@@ -352,7 +352,7 @@
                                     </div>
                                 </div>
                                 <hr>
-                                <div class="task-select-pane">
+                                <div class="task-select-pane" id="task-data-match-select-1">
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="our-tasks-content mt-45 task-select">
@@ -360,7 +360,7 @@
                                                     <h4>文件2</h4>
                                                 </div>
                                                 <div class="dropdownbox">
-                                                    <p class="selected-file">请选择文件</p>
+                                                    <p class="selected-file"></p>
                                                 </div>
                                                 <ul class="menu select-file-options" id="1">
                                                 </ul>
@@ -372,7 +372,7 @@
                                                     <h4>表</h4>
                                                 </div>
                                                 <div class="dropdownbox">
-                                                    <p class="selected-sheet">请选择表</p>
+                                                    <p class="selected-sheet"></p>
                                                 </div>
                                                 <ul class="menu select-sheet-options">
                                                 </ul>
@@ -386,7 +386,7 @@
                                                     <h4>匹配列</h4>
                                                 </div>
                                                 <div class="dropdownbox">
-                                                    <p class="selected-value-column">请选择列</p>
+                                                    <p class="selected-value-column"></p>
                                                 </div>
                                                 <ul class="menu select-value-column-options">
                                                 </ul>
@@ -398,7 +398,7 @@
                                                     <h4>匹配条件</h4>
                                                 </div>
                                                 <div class="dropdownbox">
-                                                    <p class="selected-match-condidtion">请选择条件</p>
+                                                    <p class="selected-match-condition"></p>
                                                 </div>
                                                 <ul class="menu select-match-column-options">
                                                     <li class="select-simple-option">有</li>
@@ -414,7 +414,7 @@
                                                     <h4>筛选列</h4>
                                                 </div>
                                                 <div class="dropdownbox">
-                                                    <p class="selected-group-column">请选择列</p>
+                                                    <p class="selected-group-column"></p>
                                                 </div>
                                                 <ul class="menu select-group-column-options">
                                                 </ul>
@@ -428,7 +428,7 @@
                                                     <h4>筛选列最小值</h4>
                                                 </div>
                                                 <div class="dropdownbox">
-                                                    <p class="selected-group-column-min-value">请选择最小值，空白表示全部</p>
+                                                    <p class="selected-group-column-min-value"></p>
                                                 </div>
                                                 <ul class="menu select-group-column-min-value-options">
                                                 </ul>
@@ -440,7 +440,7 @@
                                                     <h4>筛选列最大值</h4>
                                                 </div>
                                                 <div class="dropdownbox">
-                                                    <p class="selected-group-column-max-value">请选择最大值，空白表示全部</p>
+                                                    <p class="selected-group-column-max-value"></p>
                                                 </div>
                                                 <ul class="menu select-group-column-max-value-options">
                                                 </ul>
