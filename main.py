@@ -105,6 +105,10 @@ def delete_file(file_path):
 @ eel.expose
 def add_task(task_settings_json):
     global output_task_map
+    output_file_path = task_settings_json['output-file-path']
+    output_sheet_name = task_settings_json['output-sheet-name']
+    if output_file_path in output_task_map and output_sheet_name in output_task_map[output_file_path]:
+        return [False, output_file_path + ':' + output_sheet_name + '已存在']
 
 
 if __name__ == "__main__":
