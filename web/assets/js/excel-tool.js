@@ -143,7 +143,7 @@ async function updateSelectSheetOptions() {
 function resetSelectSheetOptions(taskSelectPane) {
     selectSheetOptions = taskSelectPane.find('.select-sheet-options');
     selectSheetOptions.empty();
-    resetMenu(selectSheetOptions, "请选择表")
+    resetMenu(selectSheetOptions, selectPlaceHolders['.select-sheet-options'])
     resetSelectColumnOptions(taskSelectPane);
 }
 
@@ -184,8 +184,8 @@ function resetSelectColumnOptions(taskSelectPane) {
     let selectValueColumnOptions = taskSelectPane.find('.select-value-column-options');
     selectGroupColumnOptions.empty();
     selectValueColumnOptions.empty();
-    resetMenu(selectGroupColumnOptions, "请选择列");
-    resetMenu(selectValueColumnOptions, "请选择列");
+    resetMenu(selectGroupColumnOptions, selectPlaceHolders['.select-group-column-options']);
+    resetMenu(selectValueColumnOptions, selectPlaceHolders['.select-value-column-options']);
     resetSelectGroupColumnValueOptions(taskSelectPane);
 }
 
@@ -220,8 +220,8 @@ function resetSelectGroupColumnValueOptions(taskSelectPane) {
     let selectGroupColumnMaxValueOptions = taskSelectPane.find('.select-group-column-max-value-options');
     selectGroupColumnMinValueOptions.empty();
     selectGroupColumnMaxValueOptions.empty();
-    resetMenu(selectGroupColumnMinValueOptions, "请选择列");
-    resetMenu(selectGroupColumnMaxValueOptions, "请选择列");
+    resetMenu(selectGroupColumnMinValueOptions, selectPlaceHolders['.select-group-column-min-value-options']);
+    resetMenu(selectGroupColumnMaxValueOptions, selectPlaceHolders['.select-group-column-max-value-options']);
 }
 
 function resetMenu(menu, content) {
@@ -260,6 +260,65 @@ const taskAnimations = [
 
 var currTaskAnimation = 0;
 
+function addTaskSettingsSelect(taskType, taskSelect) {
+    let taskSettingsSelect = {}
+    let selectedFile = taskSelect.find('.selected-file').text();
+    if (selectedFile != selectPlaceHolders['.select-file-options']) {
+        taskSettingsSelect['file'] = selectedFile;
+    } else {
+        alert("请先选择文件！");
+        return;
+    }
+    let selectedSheet = taskSelect.find('.selected-sheet').text();
+    if (selectedSheet != selectPlaceHolders['.select-sheet-options']) {
+        taskSettingsSelect['sheet'] = selectedSheet;
+    } else if (!selectedFile.endsWith(".csv")) {
+        alert("请先选择表！");
+        return;
+    }
+    let selectedGroupColumn = taskSelect.find('.selected-group-column').text();
+    if (selectedGroupColumn != selectPlaceHolders['.select-group-column-options']) {
+        taskSettingsSelect['group-column'] = selectedGroupColumn;
+        let selectedGroupColumnMinValue = taskSelect.find('.selected-group-column-min-value').text();
+        if (selectedGroupColumnMinValue != selectPlaceHolders['.select-group-column-min-value-options']) {
+            taskSettingsSelect['group-column-min-value'] = selectedGroupColumnMinValue;
+        }
+        let selectedGroupColumnMaxValue = taskSelect.find('selected-group-column-max-value').text();
+        if (selectedGroupColumnMaxValue != selectPlaceHolders['.select-group-column-max-value-options']) {
+            taskSettingsSelect['group-column-max-value'] = selectedGroupColumnMaxValue;
+        }
+    }
+    let selectedValueColumn = taskSelect.find('.selected-value-column').text();
+    if (selectedValueColumn != selectPlaceHolders['.select-value-column-options']) {
+        taskSettingsSelect['value-column'] = selectedValueColumn;
+    } else {
+        switch (taskType) {
+            case 'sum':
+                alert("请先选择数值列！");
+                break;
+            case 'data-match':
+                alert("请先选择匹配列！");
+                break;
+            default:
+                alert("请先选择列！");
+                break;
+        }
+        return;
+    }
+
+    if (taskType == 'data-match') {
+        let selectedMatchCondition = taskSelect.find('.selected-match-condition').text();
+        if (selectedMatchCondition != selectPlaceHolders['.selected-match-condition']) {
+            taskSettingsSelect['match-condition'] = selectedMatchCondition;
+        } else {
+            alert("请先选择匹配条件！");
+            return;
+        }
+    }
+
+    return taskSettingsSelect
+}
+
 $('#add-task-btn').click(async function () {
     let taskSelectPane = getElementByClassName(this, "task-select-content").find('.active');
     let taskType = $(taskSelectPane).attr('id')
@@ -268,9 +327,12 @@ $('#add-task-btn').click(async function () {
     if (taskType == "task-sum") {
         taskTitle = "求和";
         taskSettings['task-type'] = "sum";
-        let taskSelectSettings = {}
+        taskSettings['selects'].push(addTaskSettingsSelect(taskSettings['task-type'], $('#task-sum-select')));
     } else if (taskType == "task-data-match") {
-        taskTitle = "数据匹配"
+        taskTitle = "数据匹配";
+        taskSettings['task-type'] = "data-match";
+        taskSettings['selects'].push(addTaskSettingsSelect(taskSettings['task-type'], $('#task-data-match-select-1')));
+        taskSettings['selects'].push(addTaskSettingsSelect(taskSettings['task-type'], $('#task-data-match-select-2')));
     }
 
     // output path
@@ -285,12 +347,17 @@ $('#add-task-btn').click(async function () {
     }
     taskSettings['output-sheet-name'] = $('#task-output-sheet-name')[0].value.trim();
 
+    let inputPaths = []
+    for (let taskSettingsSelect of taskSettings['selects']) {
+        inputPaths.push(taskSettingsSelect['file'])
+    }
     let taskItem = $('<div class="single-task d-flex"></div>')
         .append($(taskAnimations[currTaskAnimation][0])) // task icon
         .append($('<div class="task-content media-body"></div>')
             .append($('<h4 class="task-title"></h4>').text(taskTitle)) // task title
-            .append($('<p><span>输入： </span> ' + inputPaths + '</p>').addClass('text')) // input path
-            .append($('<p><span>输出： </span> ' + outputPath + '</p>').addClass('text'))); // output path
+            .append($('<p><span>输入： </span> ' + inputPaths.join(", ") + '</p>').addClass('text')) // input path
+            .append($('<p><span>输出： </span> ' + taskSettings['output-file-path']
+                + ':' + taskSettings['output-sheet-name'] + '</p>').addClass('text'))); // output path
 
     // add shape
     for (let shape of taskAnimations[currTaskAnimation][1]) {
