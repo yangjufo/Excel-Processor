@@ -32,6 +32,7 @@ $('#load-file-btn').click(async function () {
     }
 
     // reset display
+    $('#load-file-name')[0].value = ''
     $('#load-file-name')[0].setAttribute('data-title', '点击添加或拖动到此处');
 
     // add file to loaded file list
