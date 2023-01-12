@@ -8,7 +8,6 @@ from datetime import datetime
 class BaseFile():
     def __init__(self, path) -> None:
         self.path = path
-        self.__sheet_names = list()
         self.__headers = list()
         self.__column_values_map = dict()
 
@@ -62,12 +61,13 @@ class CsvFile(BaseFile):
 class XlsFile(BaseFile):
     def __init__(self, path) -> None:
         super().__init__(path)
+        self.__sheet_names = list()
 
     def get_sheet_names(self):
-        if len(self.sheet_names) == 0:
-            self.sheet_names = load_workbook(
+        if len(self.__sheet_names) == 0:
+            self.__sheet_names = load_workbook(
                 self.path, read_only=True).sheetnames
-        return [True, self.sheet_names]
+        return [True, self.__sheet_names]
 
     def get_headers(self, sheet_name):
         return super().get_headers(sheet_name, self.__read_headers)
