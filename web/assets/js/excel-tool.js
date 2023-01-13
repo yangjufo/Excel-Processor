@@ -93,8 +93,14 @@ async function resetTaskSelection() {
 async function deleteFile() {
     let absoluteFilePath = $(this).parent().find('span').text();
     // delete file in backend
-    await eel.delete_file(absoluteFilePath)();
+    let delete_tasks = await eel.delete_file(absoluteFilePath)();
     await resetTaskSelection();
+    // delete task lists
+    let task_output_key = $('#added-task-list').find('.output_key');
+    if (delete_tasks.includes(task_output_key.text())) {
+        $('#added-task-list')[0].removeChild(task_output_key.parent().parent().parent())
+    }
+
     $(this).parent().remove();
 }
 
@@ -346,18 +352,24 @@ $('#add-task-btn').click(async function () {
         return;
     }
     taskSettings['output-sheet-name'] = $('#task-output-sheet-name')[0].value.trim();
+    let ret = await eel.add_task(taskSettings)();
+    if (!ret[0]) {
+        alert(ret[1]);
+        return;
+    }
 
     let inputPaths = []
     for (let taskSettingsSelect of taskSettings['selects']) {
         inputPaths.push(taskSettingsSelect['file'])
     }
+    let output_key = taskSettings['output-file-path']
+        + ':' + taskSettings['output-sheet-name']
     let taskItem = $('<div class="single-task d-flex"></div>')
         .append($(taskAnimations[currTaskAnimation][0])) // task icon
         .append($('<div class="task-content media-body"></div>')
             .append($('<h4 class="task-title"></h4>').text(taskTitle)) // task title
             .append($('<p><span>输入： </span> ' + inputPaths.join(", ") + '</p>').addClass('text')) // input path
-            .append($('<p><span>输出： </span> ' + taskSettings['output-file-path']
-                + ':' + taskSettings['output-sheet-name'] + '</p>').addClass('text'))); // output path
+            .append($('<p><span>输出： </span> <span class="output_key">' + output_key + '</span></p>').addClass('text'))); // output path
 
     // add shape
     for (let shape of taskAnimations[currTaskAnimation][1]) {
@@ -367,4 +379,13 @@ $('#add-task-btn').click(async function () {
     $('#added-task-list').append($('<div class="col-lg-4 col-md-7"></div>').append(taskItem))
 
     currTaskAnimation = (currTaskAnimation + 1) % (taskAnimations.length)
+});
+
+$('#run-task-btn').click(async function () {
+    let ret = await eel.run_all_tasks()();
+    if (!ret[0]) {
+        alert(ret[1]);
+        return;
+    }
+    $('#added-task-list')[0].innerHTML = '';
 });

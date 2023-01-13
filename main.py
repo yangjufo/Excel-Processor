@@ -4,13 +4,13 @@ import pathlib
 from random import randint
 from collections import defaultdict
 from objects.file import BaseFile, CsvFile, XlsFile
-from objects.task import BaseTask
+from objects.task import BaseTask, SumTask, DataMatchTask
 
 input_file_map = defaultdict(BaseFile)
 prev_output_path = str(pathlib.Path().resolve() /
                        "结果{0}.xlsx".format(randint(1, 10000)))
 prev_output_sheet_map = defaultdict(int)
-output_task_map = defaultdict(BaseTask)
+output_task_map = defaultdict(lambda: defaultdict(BaseTask))
 
 
 @eel.expose
@@ -98,17 +98,48 @@ def load_file(file_path, file_name):
 @ eel.expose
 def delete_file(file_path):
     global input_file_map
+    delete_tasks = defaultdict(list)
     if file_path in input_file_map:
+        for output_file_path, output_sheet_task in output_task_map.items():
+            for output_sheet, task in output_sheet_task.items():
+                for select in task.selects:
+                    if select.file.path == file_path:
+                        delete_tasks[output_file_path].append(output_sheet)
         del input_file_map[file_path]
+    output_keys = list()
+    for output_file_path, output_sheet_list in delete_tasks.items():
+        for output_sheet in output_sheet_list:
+            output_keys.append(output_file_path + ":" + output_sheet)
+            del output_task_map[output_file_path][output_sheet]
+    return output_keys
 
 
 @ eel.expose
 def add_task(task_settings_json):
-    global output_task_map
+    global output_task_map, input_file_map
     output_file_path = task_settings_json['output-file-path']
     output_sheet_name = task_settings_json['output-sheet-name']
     if output_file_path in output_task_map and output_sheet_name in output_task_map[output_file_path]:
-        return [False, output_file_path + ':' + output_sheet_name + '已存在']
+        return [False, output_file_path + ':' + output_sheet_name + ' 已存在']
+    if task_settings_json['task-type'] == 'sum':
+        output_task_map[output_file_path][output_sheet_name] = SumTask(
+            task_settings_json, input_file_map)
+    elif task_settings_json['task-type'] == 'data-match':
+        output_task_map[output_file_path][output_sheet_name] = DataMatchTask(
+            task_settings_json, input_file_map)
+    return [True, None]
+
+
+@ eel.expose
+def run_all_tasks():
+    global output_task_map
+    for _, output_sheet_task in output_task_map.items():
+        for _, task in output_sheet_task.items():
+            try:
+                task.run()
+            except Exception as e:
+                return [False, e]
+    return [True, None]
 
 
 if __name__ == "__main__":

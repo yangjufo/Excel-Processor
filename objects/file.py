@@ -8,24 +8,24 @@ from datetime import datetime
 class BaseFile():
     def __init__(self, path) -> None:
         self.path = path
-        self.__headers = list()
-        self.__column_values_map = dict()
+        self._headers = list()
+        self._column_values_map = dict()
 
     def get_sheet_names(self):
         return [True, []]
 
     def get_headers(self, sheet_name, read_headers):
-        if len(self.__headers) == 0:
+        if len(self._headers) == 0:
             # read headers from child class
             headers_frame = read_headers(sheet_name)
             index = 0
             for c in headers_frame.values.tolist()[0]:
-                self.__headers.append(str(index) + " " + str(c))
+                self._headers.append(str(index) + " " + str(c))
                 index += 1
-        return [True, self.__headers]
+        return [True, self._headers]
 
     def get_column_values(self, sheet_name, column_index, read_column_values):
-        if column_index not in self.__column_values_map:
+        if column_index not in self._column_values_map:
             # read column values from child class
             column_values_frame = read_column_values(
                 sheet_name, column_index)
@@ -35,8 +35,8 @@ class BaseFile():
                     cols.add(c[0].strftime('%Y-%m-%d'))
                 else:
                     cols.add(str(c[0]))
-            self.__column_values_map[column_index] = sorted(cols)
-        return [True, self.__column_values_map[column_index]]
+            self._column_values_map[column_index] = sorted(cols)
+        return [True, self._column_values_map[column_index]]
 
 
 # CSV file
@@ -47,13 +47,13 @@ class CsvFile(BaseFile):
     def get_headers(self, sheet_name):
         return super().get_headers(sheet_name, self.__read_headers)
 
-    def __read_headers(self, sheet_name):
+    def __read_headers(self, _):
         return pd.read_csv(self.path, nrows=1, header=None)
 
     def get_column_values(self, sheet_name, column_index):
         return super().get_column_values(sheet_name, column_index, self.__read_column_values)
 
-    def __read_column_values(self, sheet_name, column_index):
+    def __read_column_values(self, _, column_index):
         return pd.read_csv(self.path, usecols=[column_index])
 
 
@@ -61,13 +61,13 @@ class CsvFile(BaseFile):
 class XlsFile(BaseFile):
     def __init__(self, path) -> None:
         super().__init__(path)
-        self.__sheet_names = list()
+        self._sheet_names = list()
 
     def get_sheet_names(self):
-        if len(self.__sheet_names) == 0:
-            self.__sheet_names = load_workbook(
+        if len(self._sheet_names) == 0:
+            self._sheet_names = load_workbook(
                 self.path, read_only=True).sheetnames
-        return [True, self.__sheet_names]
+        return [True, self._sheet_names]
 
     def get_headers(self, sheet_name):
         return super().get_headers(sheet_name, self.__read_headers)
