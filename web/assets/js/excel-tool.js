@@ -338,12 +338,24 @@ $('#add-task-btn').click(async function () {
     if (taskType == "task-sum") {
         taskTitle = "求和";
         taskSettings['task-type'] = "sum";
-        taskSettings['selects'].push(addTaskSettingsSelect(taskSettings['task-type'], $('#task-sum-select')));
+        let taskSettingsSelect = addTaskSettingsSelect(taskSettings['task-type'], $('#task-sum-select'));
+        if (taskSettingsSelect == null) {
+            return;
+        }
+        taskSettings['selects'].push();
     } else if (taskType == "task-data-match") {
         taskTitle = "数据匹配";
         taskSettings['task-type'] = "data-match";
-        taskSettings['selects'].push(addTaskSettingsSelect(taskSettings['task-type'], $('#task-data-match-select-1')));
-        taskSettings['selects'].push(addTaskSettingsSelect(taskSettings['task-type'], $('#task-data-match-select-2')));
+        let taskSettingsSelect1 = addTaskSettingsSelect(taskSettings['task-type'], $('#task-sum-select-1'));
+        if (taskSettingsSelect1 == null) {
+            return;
+        }
+        taskSettings['selects'].push(taskSettingsSelect1);
+        let taskSettingsSelect2 = addTaskSettingsSelect(taskSettings['task-type'], $('#task-sum-select-2'));
+        if (taskSettingsSelect2 == null) {
+            return;
+        }
+        taskSettings['selects'].push(taskSettingsSelect2);
     }
 
     // output path
