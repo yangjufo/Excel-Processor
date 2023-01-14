@@ -93,12 +93,17 @@ async function resetTaskSelection() {
 async function deleteFile() {
     let absoluteFilePath = $(this).parent().find('span').text();
     // delete file in backend
-    let delete_tasks = await eel.delete_file(absoluteFilePath)();
+    let deletedFiles = await eel.delete_file(absoluteFilePath)();
     await resetTaskSelection();
     // delete task lists
-    let task_output_key = $('#added-task-list').find('.output_key');
-    if (delete_tasks.includes(task_output_key.text())) {
-        $('#added-task-list')[0].removeChild(task_output_key.parent().parent().parent())
+    let deleteTasks = []
+    for (let singleTask of $('#added-task-list')[0].children) {
+        if (deletedFiles.includes(singleTask.querySelector('.output-key').textContent)) {
+            deleteTasks.push(singleTask);
+        }
+    }
+    for (let singleTask of deleteTasks) {
+        $('#added-task-list')[0].removeChild(singleTask);
     }
 
     $(this).parent().remove();
@@ -362,14 +367,14 @@ $('#add-task-btn').click(async function () {
     for (let taskSettingsSelect of taskSettings['selects']) {
         inputPaths.push(taskSettingsSelect['file'])
     }
-    let output_key = taskSettings['output-file-path']
+    let outputKey = taskSettings['output-file-path']
         + ':' + taskSettings['output-sheet-name']
     let taskItem = $('<div class="single-task d-flex"></div>')
         .append($(taskAnimations[currTaskAnimation][0])) // task icon
         .append($('<div class="task-content media-body"></div>')
             .append($('<h4 class="task-title"></h4>').text(taskTitle)) // task title
             .append($('<p><span>输入： </span> ' + inputPaths.join(", ") + '</p>').addClass('text')) // input path
-            .append($('<p><span>输出： </span> <span class="output_key">' + output_key + '</span></p>').addClass('text'))); // output path
+            .append($('<p><span>输出： </span> <span class="output-key">' + outputKey + '</span></p>').addClass('text'))); // output path
 
     // add shape
     for (let shape of taskAnimations[currTaskAnimation][1]) {
