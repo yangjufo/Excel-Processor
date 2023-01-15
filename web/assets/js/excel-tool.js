@@ -87,7 +87,7 @@ async function resetTaskSelection() {
     }
     for (let selectMatchCondition of $('.selected-match-condition')) {
         $(selectMatchCondition).text(selectPlaceHolders['.selected-match-condition']).css("color", '#798795');
-    };
+    }
 }
 
 async function deleteFile() {
@@ -294,7 +294,7 @@ function addTaskSettingsSelect(taskType, taskSelect) {
         if (selectedGroupColumnMinValue != selectPlaceHolders['.select-group-column-min-value-options']) {
             taskSettingsSelect['group-column-min-value'] = selectedGroupColumnMinValue;
         }
-        let selectedGroupColumnMaxValue = taskSelect.find('selected-group-column-max-value').text();
+        let selectedGroupColumnMaxValue = taskSelect.find('.selected-group-column-max-value').text();
         if (selectedGroupColumnMaxValue != selectPlaceHolders['.select-group-column-max-value-options']) {
             taskSettingsSelect['group-column-max-value'] = selectedGroupColumnMaxValue;
         }
@@ -342,7 +342,7 @@ $('#add-task-btn').click(async function () {
         if (taskSettingsSelect == null) {
             return;
         }
-        taskSettings['selects'].push();
+        taskSettings['selects'].push(taskSettingsSelect);
     } else if (taskType == "task-data-match") {
         taskTitle = "数据匹配";
         taskSettings['task-type'] = "data-match";
@@ -399,9 +399,10 @@ $('#add-task-btn').click(async function () {
 });
 
 $('#run-task-btn').click(async function () {
+    alert("正在执行任务，请耐心等待。。。");
     let ret = await eel.run_all_tasks()();
+    alert(ret[1]);
     if (!ret[0]) {
-        alert(ret[1]);
         return;
     }
     $('#added-task-list')[0].innerHTML = '';

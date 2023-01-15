@@ -1,10 +1,10 @@
-from random import random
 import eel
 import pathlib
 from random import randint
 from collections import defaultdict
 from objects.file import BaseFile, CsvFile, XlsFile
 from objects.task import BaseTask, SumTask, DataMatchTask
+import traceback
 
 input_file_map = defaultdict(BaseFile)
 prev_output_path = str(pathlib.Path().resolve() /
@@ -33,8 +33,9 @@ def get_sheet_names(file_path):
     global input_file_map
     try:
         return input_file_map[file_path].get_sheet_names()
-    except Exception as e:
-        return [False, e]
+    except Exception:
+        traceback.print_exc()
+        return [False, "遇到一个异常，请查看日志！"]
 
 
 @ eel.expose
@@ -42,17 +43,21 @@ def get_headers(file_path, sheet_name):
     global input_file_map
     try:
         return input_file_map[file_path].get_headers(sheet_name)
-    except Exception as e:
-        return [False, e]
+    except Exception:
+        traceback.print_exc()
+        return [False, "遇到一个异常，请查看日志！"]
 
 
 @ eel.expose
-def get_column_values(file_path, sheet_name, column):
+def get_column_values(file_path, sheet_name, column, exclude_header=True):
     global input_file_map
     try:
-        return input_file_map[file_path].get_column_values(sheet_name, (int)(column.split(' ')[0]))
-    except Exception as e:
-        return [False, e]
+        cols = input_file_map[file_path].get_column_values(
+            sheet_name, (int)(column.split(' ')[0]), exclude_header)[1]
+        return [True, cols]
+    except Exception:
+        traceback.print_exc()
+        return [False, "遇到一个异常，请查看日志！"]
 
 
 @ eel.expose
@@ -91,8 +96,9 @@ def load_file(file_path, file_name):
             input_file_map[str(absolute_file_path)] = XlsFile(
                 str(absolute_file_path))
         return [True, str(absolute_file_path)]
-    except Exception as e:
-        return [False, e]
+    except Exception:
+        traceback.print_exc()
+        return [False, "遇到一个异常，请查看日志！"]
 
 
 @ eel.expose
@@ -133,13 +139,18 @@ def add_task(task_settings_json):
 @ eel.expose
 def run_all_tasks():
     global output_task_map
-    for _, output_sheet_task in output_task_map.items():
+    if len(output_task_map) == 0:
+        return [False, "请先添加任务！"]
+    output_paths = set()
+    for output_path, output_sheet_task in output_task_map.items():
         for _, task in output_sheet_task.items():
             try:
                 task.run()
-            except Exception as e:
-                return [False, e]
-    return [True, None]
+                output_paths.add(output_path)
+            except Exception:
+                traceback.print_exc()
+                return [False, "遇到一个异常，请查看日志！"]
+    return [True, '任务完成，请在文件 [' + '、'.join(output_paths) + ' 中查看结果！']
 
 
 if __name__ == "__main__":

@@ -1,8 +1,9 @@
 
 
-from objects.file import BaseFile
-
-DEFAULT_READ_ROWS = 1000
+import pandas as pd
+from openpyxl import load_workbook, Workbook
+import os.path
+from datetime import datetime
 
 
 class BaseSelectSettings():
@@ -35,6 +36,35 @@ class BaseTask():
         self._output_sheet = self._task_settings['output-sheet-name']
         self._completed = False
 
+    def _write_results(self, df: pd.DataFrame):
+        if os.path.isfile(self._output_path):
+            book = load_workbook(self._output_path)
+            writer = pd.ExcelWriter(self._output_path, engine='openpyxl')
+            writer.book = book
+            df.to_excel(writer, sheet_name=self._output_sheet)
+            writer.close()
+        else:
+            df.to_excel(self._output_path, sheet_name=self._output_sheet)
+
+    def _convert_group_column_value(self, group_value, select):
+        if isinstance(group_value, datetime):
+            if select.group_column_min_value is not None:
+                select.group_column_min_value = datetime.strptime(
+                    select.group_column_min_value, '%Y-%m-%d')
+            if select.group_column_max_value is not None:
+                select.group_column_max_value = datetime.strptime(
+                    select.group_column_max_value, '%Y-%m-%d')
+            return True
+        if type(group_value) == int or type(group_value) == float:
+            if select.group_column_min_value is not None:
+                select.group_column_min_value = float(
+                    select.group_column_min_value)
+            if select.group_column_max_value is not None:
+                select.group_column_max_value = float(
+                    select.group_column_max_value)
+            return True
+        return False
+
     def run():
         pass
 
@@ -52,22 +82,34 @@ class SumTask(BaseTask):
         group_sums = {}
         sum = 0
         select = self.selects[0]
-        start_row_index = 1
         headers = select.file.get_headers(None)[1]
         header_indexes = {headers[i]: i for i in range(len(headers))}
-        for row in select.file.get_row_values(select.sheet, start_row_index, DEFAULT_READ_ROWS).values.tolist():
+        group_column_values_checked = False
+        group_column_values_converted = False
+        for row in select.file.get_row_values(select.sheet).values.tolist():
             if select.group_column is not None:
                 group_value = row[header_indexes[select.group_column]]
+                if not group_column_values_checked:
+                    group_column_values_converted = self._convert_group_column_value(
+                        group_value, select)
+                group_column_values_checked = True
+                if not group_column_values_converted:
+                    group_value = str(group_value)
                 if select.group_column_min_value is not None and group_value < select.group_column_min_value:
                     continue
                 if select.group_column_max_value is not None and group_value > select.group_column_max_value:
                     continue
                 if group_value not in group_sums:
                     group_sums[group_value] = 0
-                group_sums[group_value] += float(row[select.value_column])
+                group_sums[group_value] += float(
+                    row[header_indexes[select.value_column]])
             else:
-                sum += float(row[select.value_column])
-            start_row_index += DEFAULT_READ_ROWS
+                sum += float(row[header_indexes[select.value_column]])
+        if len(group_sums) > 0:
+            df = pd.DataFrame(group_sums.items(), columns=['分组列', '和'])
+        else:
+            df = pd.DataFrame([sum], columns=['和'])
+        self._write_results(df)
         self._completed = True
 
 

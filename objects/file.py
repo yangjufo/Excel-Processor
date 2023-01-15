@@ -24,19 +24,22 @@ class BaseFile():
                 index += 1
         return [True, self._headers]
 
-    def get_column_values(self, sheet_name, column_index, read_column_values):
+    def get_column_values(self, sheet_name, column_index, exclude_header, read_column_values):
         if column_index not in self._column_values_map:
             # read column values from child class
             column_values_frame = read_column_values(
                 sheet_name, column_index)
             cols = set()
-            for c in column_values_frame.values.tolist():
+            for c in column_values_frame.values.tolist()[1:]:
                 if isinstance(c[0], datetime):
                     cols.add(c[0].strftime('%Y-%m-%d'))
                 else:
                     cols.add(str(c[0]))
             self._column_values_map[column_index] = sorted(cols)
-        return [True, self._column_values_map[column_index]]
+        cols = self._column_values_map[column_index]
+        if not exclude_header:
+            cols.append(self._headers[column_index].split(' ', 1)[1])
+        return [True, sorted(cols)]
 
 
 # CSV file
@@ -50,14 +53,14 @@ class CsvFile(BaseFile):
     def __read_headers(self, _):
         return pd.read_csv(self.path, nrows=1, header=None)
 
-    def get_column_values(self, sheet_name, column_index):
-        return super().get_column_values(sheet_name, column_index, self.__read_column_values)
+    def get_column_values(self, sheet_name, column_index, exclude_header):
+        return super().get_column_values(sheet_name, column_index, exclude_header, self.__read_column_values)
 
     def __read_column_values(self, _, column_index):
-        return pd.read_csv(self.path, usecols=[column_index])
+        return pd.read_csv(self.path, header=None, usecols=[column_index])
 
-    def get_row_values(self, _, start_row_index, row_count):
-        return pd.read_csv(self.path, skiprows=start_row_index, nrows=row_count)
+    def get_row_values(self, _):
+        return pd.read_csv(self.path)
 
 
 # XLS, XLSX file
@@ -79,12 +82,12 @@ class XlsFile(BaseFile):
         return pd.read_excel(
             self.path, sheet_name=sheet_name, nrows=1, header=None)
 
-    def get_column_values(self, sheet_name, column_index):
-        return super().get_column_values(sheet_name, column_index, self.__read_column_values)
+    def get_column_values(self, sheet_name, column_index, exclude_header):
+        return super().get_column_values(sheet_name, column_index, exclude_header, self.__read_column_values)
 
     def __read_column_values(self, sheet_name, column_index):
         return pd.read_excel(
             self.path, sheet_name=sheet_name, header=None, usecols=[column_index])
 
-    def get_row_values(self, sheet_name, start_row_index, row_count):
-        return pd.read_excel(self.path, sheet_name=sheet_name, skiprows=start_row_index, nrows=row_count)
+    def get_row_values(self, sheet_name):
+        return pd.read_excel(self.path, sheet_name=sheet_name)
