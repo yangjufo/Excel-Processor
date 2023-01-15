@@ -127,13 +127,24 @@ def add_task(task_settings_json):
     output_sheet_name = task_settings_json['output-sheet-name']
     if output_file_path in output_task_map and output_sheet_name in output_task_map[output_file_path]:
         return [False, output_file_path + ':' + output_sheet_name + ' 已存在']
-    if task_settings_json['task-type'] == 'sum':
-        output_task_map[output_file_path][output_sheet_name] = SumTask(
-            task_settings_json, input_file_map)
-    elif task_settings_json['task-type'] == 'data-match':
-        output_task_map[output_file_path][output_sheet_name] = DataMatchTask(
-            task_settings_json, input_file_map)
+    try:
+        if task_settings_json['task-type'] == 'sum':
+            output_task_map[output_file_path][output_sheet_name] = SumTask(
+                task_settings_json, input_file_map)
+        elif task_settings_json['task-type'] == 'data-match':
+            output_task_map[output_file_path][output_sheet_name] = DataMatchTask(
+                task_settings_json, input_file_map)
+    except Exception as e:
+        traceback.print_exc()
+        return [False, str(e)]
     return [True, None]
+
+
+@ eel.expose
+def delete_task(output_file_path, output_sheet_name):
+    global output_task_map
+    if output_file_path in output_task_map and output_sheet_name in output_task_map[output_file_path]:
+        del output_task_map[output_file_path][output_sheet_name]
 
 
 @ eel.expose

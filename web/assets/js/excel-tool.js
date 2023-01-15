@@ -98,7 +98,8 @@ async function deleteFile() {
     // delete task lists
     let deleteTasks = []
     for (let singleTask of $('#added-task-list')[0].children) {
-        if (deletedFiles.includes(singleTask.querySelector('.output-key').textContent)) {
+        if (deletedFiles.includes(singleTask.querySelector('.output-file-path').textContent
+            + ':' + singleTask.querySelector('.output-sheet-name').textContent)) {
             deleteTasks.push(singleTask);
         }
     }
@@ -259,12 +260,12 @@ $('.dropdownbox').click(function () {
 });
 
 const taskAnimations = [
-    ['<div class="task-icon"><img src="assets/images/task-1.png" alt="Icon"></div>',
+    ['<div class="task-icon"><img src="assets/images/task-1.png" alt="Icon"><div style="padding-top:30px"><a class="vertical-main-btn main-btn-2" id="delete-task-btn">删除</a></div></div>',
         ['<div class="shape shape-1"><img src="assets/images/shape/shape-1.svg" alt="shape"></div>',
             '<div class="shape shape-2"><img src="assets/images/shape/shape-2.svg" alt="shape"></div>']],
-    ['<div class="task-icon"><img src="assets/images/task-2.png" alt="Icon"></div>',
+    ['<div class="task-icon"><img src="assets/images/task-2.png" alt="Icon"><div style="padding-top:30px"><a class="vertical-main-btn main-btn-2" id="delete-task-btn">删除</a></div></div>',
         ['<div class="shape shape-3"><img src="assets/images/shape/shape-3.svg" alt="shape"></div>']],
-    ['<div class="task-icon"><img src="assets/images/task-3.png" alt="Icon"></div>',
+    ['<div class="task-icon"><img src="assets/images/task-3.png" alt="Icon"><div style="padding-top:30px"><a class="vertical-main-btn main-btn-2" id="delete-task-btn">删除</a></div></div>',
         ['<div class="shape shape-4"><img src="assets/images/shape/shape-4.svg" alt="shape"></div>',
             '<div class="shape shape-5"><img src="assets/images/shape/shape-5.svg" alt="shape"></div>']]
 ];
@@ -346,12 +347,12 @@ $('#add-task-btn').click(async function () {
     } else if (taskType == "task-data-match") {
         taskTitle = "数据匹配";
         taskSettings['task-type'] = "data-match";
-        let taskSettingsSelect1 = addTaskSettingsSelect(taskSettings['task-type'], $('#task-sum-select-1'));
+        let taskSettingsSelect1 = addTaskSettingsSelect(taskSettings['task-type'], $('#task-data-match-select-1'));
         if (taskSettingsSelect1 == null) {
             return;
         }
         taskSettings['selects'].push(taskSettingsSelect1);
-        let taskSettingsSelect2 = addTaskSettingsSelect(taskSettings['task-type'], $('#task-sum-select-2'));
+        let taskSettingsSelect2 = addTaskSettingsSelect(taskSettings['task-type'], $('#task-data-match-select-2'));
         if (taskSettingsSelect2 == null) {
             return;
         }
@@ -383,14 +384,13 @@ $('#add-task-btn').click(async function () {
     for (let taskSettingsSelect of taskSettings['selects']) {
         inputPaths.push(taskSettingsSelect['file'])
     }
-    let outputKey = taskSettings['output-file-path']
-        + ':' + taskSettings['output-sheet-name']
     let taskItem = $('<div class="single-task d-flex"></div>')
         .append($(taskAnimations[currTaskAnimation][0])) // task icon
         .append($('<div class="task-content media-body"></div>')
             .append($('<h4 class="task-title"></h4>').text(taskTitle)) // task title
             .append($('<p><span>输入： </span> ' + inputPaths.join(", ") + '</p>').addClass('text')) // input path
-            .append($('<p><span>输出： </span> <span class="output-key">' + outputKey + '</span></p>').addClass('text'))); // output path
+            .append($('<p><span>输出文件： </span> <span class="output-file-path">' + taskSettings['output-file-path'] + '</span></p>').addClass('text')) // output path
+            .append($('<p><span>输出文件： </span> <span class="output-sheet-name">' + taskSettings['output-sheet-name'] + '</span></p>').addClass('text'))); // output sheet
 
     // add shape
     for (let shape of taskAnimations[currTaskAnimation][1]) {
@@ -398,15 +398,29 @@ $('#add-task-btn').click(async function () {
     }
 
     $('#added-task-list').append($('<div class="col-lg-4 col-md-7"></div>').append(taskItem))
+    $('#delete-task-btn').click(deleteTask)
 
     currTaskAnimation = (currTaskAnimation + 1) % (taskAnimations.length)
 });
 
+async function deleteTask() {
+    let taskItem = this;
+    while (!taskItem.classList.contains('single-task')) {
+        taskItem = taskItem.parentNode;
+    }
+    await eel.delete_task(taskItem.querySelector('.output-file-path').textContent,
+        taskItem.querySelector('.output-sheet-name').textContent);
+    $('#added-task-list')[0].removeChild(taskItem.parentNode);
+}
+
 $('#run-task-btn').click(async function () {
-    alert("正在执行任务，请耐心等待。。。");
+    let addedTaskList = $('#added-task-list')[0].innerHTML
+    $('#added-task-list')[0].innerHTML = ''
+    $('#added-task-list').append($('<div class="title" style="padding: 100px"><h4>正在执行任务，请耐心等待。。。</h4></div>'));
     let ret = await eel.run_all_tasks()();
     alert(ret[1]);
     if (!ret[0]) {
+        $('#added-task-list')[0].innerHTML = addedTaskList;
         return;
     }
     $('#added-task-list')[0].innerHTML = '';

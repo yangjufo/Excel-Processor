@@ -52,10 +52,19 @@ class BaseSelectSettings():
         return False
 
 
+class SumSelectSettings(BaseSelectSettings):
+    def __init__(self, select_settings_json, input_file_map) -> None:
+        super().__init__(select_settings_json, input_file_map)
+        sum_value = self.file.get_row_values(self.sheet, 1).values.tolist()[
+            0][self.header_indexes[self.value_column]]
+        if not((type(sum_value) == int) or type(sum_value) == float):
+            raise Exception("数值列必须为数字！")
+
+
 class DataMatchSelectSettings(BaseSelectSettings):
     def __init__(self, select_settings_json, input_file_map) -> None:
         super().__init__(select_settings_json, input_file_map)
-        self.match_inclusion = self.select_settings['match-condition'] == '是'
+        self.match_inclusion = self.select_settings['match-condition'] == '有'
 
 
 class BaseTask():
@@ -94,7 +103,7 @@ class SumTask(BaseTask):
     def __init__(self, task_settings, input_file_map) -> None:
         super().__init__(task_settings)
         for select_settings in self._task_settings['selects']:
-            self.selects.append(BaseSelectSettings(
+            self.selects.append(SumSelectSettings(
                 select_settings, input_file_map))
 
     def run(self):
@@ -105,14 +114,14 @@ class SumTask(BaseTask):
         for row in select.file.get_all_row_values(select.sheet).values.tolist():
             group_value = "所有" if select.group_column is None else row[
                 select.header_indexes[select.group_column]]
-            if self._should_exclude_row(row, group_value, select):
+            if self._should_exclude_row(group_value, select):
                 continue
             if group_value not in group_sums:
                 group_sums[group_value] = 0
             group_sums[group_value] += float(
                 row[select.header_indexes[select.value_column]])
-        df = pd.DataFrame(group_sums.items(), columns=['分组列', '和'])
-        self._write_results(df)
+        self._write_results(pd.DataFrame(
+            group_sums.items(), columns=['分组列', '和']))
         self._completed = True
 
 
@@ -138,22 +147,34 @@ class DataMatchTask(BaseTask):
     def run(self):
         if self._completed:
             return
-        selected_rows_1 = self.__get_selected_rows(self.selects[0])
-        selected_rows_2 = self.__get_selected_rows(self.selects[1])
-        matched_rows_1 = list()
-        matched_rows_2 = list()
-        if self.selects[0].match_inclusion and self.selects[1].match_inclusion:
+        select_1 = self.selects[0]
+        select_2 = self.selects[1]
+        selected_rows_1 = self.__get_selected_rows(select_1)
+        selected_rows_2 = self.__get_selected_rows(select_2)
+        results = list()
+        if select_1.match_inclusion and select_2.match_inclusion:
+            results.append([
+                header.split(' ', 1)[1] for header in select_1.headers]
+                + [header.split(' ', 1)[1] for header in select_2.headers[0:select_2.header_indexes[select_2.value_column]]] + [
+                header.split(' ', 1)[1] for header in select_2.headers[select_2.header_indexes[select_2.value_column] + 1:]])
             for match_value, rows in selected_rows_1.items():
                 if match_value in selected_rows_2:
-                    matched_rows_1 += rows
-                    matched_rows_2 += selected_rows_2[match_value]
-        elif self.selects[0].match_inclusion:
+                    for row_1 in rows:
+                        for row_2 in selected_rows_2[match_value]:
+                            results.append(row_1 + row_2[0:select_2.header_indexes[select_2.value_column]]
+                                           + row_2[select_2.header_indexes[select_2.value_column] + 1:])
+        elif select_1.match_inclusion:
+            results.append([
+                header.split(' ', 1)[1] for header in select_1.headers])
             for match_value, rows in selected_rows_1.items():
                 if match_value not in selected_rows_2:
-                    matched_rows_1 += rows
-        elif self.selects[1].match_inclusion:
+                    results += rows
+        elif select_2.match_inclusion:
+            results.append([
+                header.split(' ', 1)[1] for header in select_2.headers])
             for match_value, rows in selected_rows_2.items():
                 if match_value not in selected_rows_1:
-                    matched_rows_2 += rows
+                    results += rows
+        self._write_results(pd.DataFrame(results))
 
         self._completed = True
