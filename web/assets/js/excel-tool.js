@@ -390,7 +390,7 @@ $('#add-task-btn').click(async function () {
             .append($('<h4 class="task-title"></h4>').text(taskTitle)) // task title
             .append($('<p><span>输入： </span> ' + inputPaths.join(", ") + '</p>').addClass('text')) // input path
             .append($('<p><span>输出文件： </span> <span class="output-file-path">' + taskSettings['output-file-path'] + '</span></p>').addClass('text')) // output path
-            .append($('<p><span>输出文件： </span> <span class="output-sheet-name">' + taskSettings['output-sheet-name'] + '</span></p>').addClass('text'))); // output sheet
+            .append($('<p><span>输出表： </span> <span class="output-sheet-name">' + taskSettings['output-sheet-name'] + '</span></p>').addClass('text'))); // output sheet
 
     // add shape
     for (let shape of taskAnimations[currTaskAnimation][1]) {

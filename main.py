@@ -161,6 +161,7 @@ def run_all_tasks():
             except Exception:
                 traceback.print_exc()
                 return [False, "遇到一个异常，请查看日志！"]
+    output_task_map.clear()
     return [True, '任务完成，请在文件 [' + '、'.join(output_paths) + ' 中查看结果！']
 
 
