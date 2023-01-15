@@ -356,6 +356,10 @@ $('#add-task-btn').click(async function () {
             return;
         }
         taskSettings['selects'].push(taskSettingsSelect2);
+        if (taskSettingsSelect1['match-condition'] == '无' && taskSettingsSelect2['match-condition'] == '无') {
+            alert('至少有一个匹配条件必须为“有”！');
+            return;
+        }
     }
 
     // output path

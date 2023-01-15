@@ -59,7 +59,10 @@ class CsvFile(BaseFile):
     def __read_column_values(self, _, column_index):
         return pd.read_csv(self.path, header=None, usecols=[column_index])
 
-    def get_row_values(self, _):
+    def get_row_values(self, _, nrows):
+        return pd.read_csv(self.path, nrows=nrows)
+
+    def get_all_row_values(self, _):
         return pd.read_csv(self.path)
 
 
@@ -89,5 +92,8 @@ class XlsFile(BaseFile):
         return pd.read_excel(
             self.path, sheet_name=sheet_name, header=None, usecols=[column_index])
 
-    def get_row_values(self, sheet_name):
+    def get_row_values(self, sheet_name, nrows):
+        return pd.read_excel(self.path, sheet_name=sheet_name, nrows=nrows)
+
+    def get_all_row_values(self, sheet_name):
         return pd.read_excel(self.path, sheet_name=sheet_name)

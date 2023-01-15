@@ -1,9 +1,11 @@
 
 
 import pandas as pd
-from openpyxl import load_workbook, Workbook
+from openpyxl import load_workbook
 import os.path
 from datetime import datetime
+from collections import defaultdict
+from enum import Enum
 
 
 class BaseSelectSettings():
@@ -12,20 +14,48 @@ class BaseSelectSettings():
         # input file
         self.file = input_file_map[self.select_settings['file']]
         self.sheet = self.select_settings['sheet'] if 'sheet' in self.select_settings else None
+        self.headers = self.file.get_headers(self.sheet)[1]
+        self.header_indexes = {
+            self.headers[i]: i for i in range(len(self.headers))}
         # 分组列 / 筛选列
         self.group_column = self.select_settings['group-column'] if 'group-column' in self.select_settings else None
         self.group_column_min_value = self.select_settings[
             'group-column-min-value'] if 'group-column-min-value' in self.select_settings else None
         self.group_column_max_value = self.select_settings[
             'group-column-max-value'] if 'group-column-max-value' in self.select_settings else None
+        self.group_column_values_converted = self.__convert_group_column_values()
         # 数值列 / 匹配列
         self.value_column = self.select_settings['value-column']
+
+    def __convert_group_column_values(self):
+        row = self.file.get_row_values(self.sheet, 1).values.tolist()[0]
+        if self.group_column is None:
+            return False
+        group_value = row[
+            self.header_indexes[self.group_column]]
+        if isinstance(group_value, datetime):
+            if self.group_column_min_value is not None:
+                self.group_column_min_value = datetime.strptime(
+                    self.group_column_min_value, '%Y-%m-%d')
+            if self.group_column_max_value is not None:
+                self.group_column_max_value = datetime.strptime(
+                    self.group_column_max_value, '%Y-%m-%d')
+            return True
+        if type(group_value) == int or type(group_value) == float:
+            if self.group_column_min_value is not None:
+                self.group_column_min_value = float(
+                    self.group_column_min_value)
+            if self.group_column_max_value is not None:
+                self.group_column_max_value = float(
+                    self.group_column_max_value)
+            return True
+        return False
 
 
 class DataMatchSelectSettings(BaseSelectSettings):
     def __init__(self, select_settings_json, input_file_map) -> None:
         super().__init__(select_settings_json, input_file_map)
-        self.match_condition = self.select_settings['match-condition']
+        self.match_inclusion = self.select_settings['match-condition'] == '是'
 
 
 class BaseTask():
@@ -46,23 +76,14 @@ class BaseTask():
         else:
             df.to_excel(self._output_path, sheet_name=self._output_sheet)
 
-    def _convert_group_column_value(self, group_value, select):
-        if isinstance(group_value, datetime):
-            if select.group_column_min_value is not None:
-                select.group_column_min_value = datetime.strptime(
-                    select.group_column_min_value, '%Y-%m-%d')
-            if select.group_column_max_value is not None:
-                select.group_column_max_value = datetime.strptime(
-                    select.group_column_max_value, '%Y-%m-%d')
-            return True
-        if type(group_value) == int or type(group_value) == float:
-            if select.group_column_min_value is not None:
-                select.group_column_min_value = float(
-                    select.group_column_min_value)
-            if select.group_column_max_value is not None:
-                select.group_column_max_value = float(
-                    select.group_column_max_value)
-            return True
+    def _should_exclude_row(self, group_value, select):
+        if select.group_column is not None:
+            if not select.group_column_values_converted:
+                group_value = str(group_value)
+            if select.group_column_min_value is not None and group_value < select.group_column_min_value:
+                return True
+            if select.group_column_max_value is not None and group_value > select.group_column_max_value:
+                return True
         return False
 
     def run():
@@ -80,35 +101,17 @@ class SumTask(BaseTask):
         if self._completed:
             return
         group_sums = {}
-        sum = 0
         select = self.selects[0]
-        headers = select.file.get_headers(None)[1]
-        header_indexes = {headers[i]: i for i in range(len(headers))}
-        group_column_values_checked = False
-        group_column_values_converted = False
-        for row in select.file.get_row_values(select.sheet).values.tolist():
-            if select.group_column is not None:
-                group_value = row[header_indexes[select.group_column]]
-                if not group_column_values_checked:
-                    group_column_values_converted = self._convert_group_column_value(
-                        group_value, select)
-                group_column_values_checked = True
-                if not group_column_values_converted:
-                    group_value = str(group_value)
-                if select.group_column_min_value is not None and group_value < select.group_column_min_value:
-                    continue
-                if select.group_column_max_value is not None and group_value > select.group_column_max_value:
-                    continue
-                if group_value not in group_sums:
-                    group_sums[group_value] = 0
-                group_sums[group_value] += float(
-                    row[header_indexes[select.value_column]])
-            else:
-                sum += float(row[header_indexes[select.value_column]])
-        if len(group_sums) > 0:
-            df = pd.DataFrame(group_sums.items(), columns=['分组列', '和'])
-        else:
-            df = pd.DataFrame([sum], columns=['和'])
+        for row in select.file.get_all_row_values(select.sheet).values.tolist():
+            group_value = "所有" if select.group_column is None else row[
+                select.header_indexes[select.group_column]]
+            if self._should_exclude_row(row, group_value, select):
+                continue
+            if group_value not in group_sums:
+                group_sums[group_value] = 0
+            group_sums[group_value] += float(
+                row[select.header_indexes[select.value_column]])
+        df = pd.DataFrame(group_sums.items(), columns=['分组列', '和'])
         self._write_results(df)
         self._completed = True
 
@@ -120,7 +123,37 @@ class DataMatchTask(BaseTask):
             self.selects.append(DataMatchSelectSettings(
                 select_settings, input_file_map))
 
+    def __get_selected_rows(self, select):
+        selected_rows = defaultdict(list)
+        for row in select.file.get_all_row_values(
+                select.sheet).values.tolist():
+            group_value = None if select.group_column is None else row[
+                select.header_indexes[select.group_column]]
+            if self._should_exclude_row(group_value, select):
+                continue
+            selected_rows[row[
+                select.header_indexes[select.value_column]]].append(row)
+        return selected_rows
+
     def run(self):
         if self._completed:
             return
+        selected_rows_1 = self.__get_selected_rows(self.selects[0])
+        selected_rows_2 = self.__get_selected_rows(self.selects[1])
+        matched_rows_1 = list()
+        matched_rows_2 = list()
+        if self.selects[0].match_inclusion and self.selects[1].match_inclusion:
+            for match_value, rows in selected_rows_1.items():
+                if match_value in selected_rows_2:
+                    matched_rows_1 += rows
+                    matched_rows_2 += selected_rows_2[match_value]
+        elif self.selects[0].match_inclusion:
+            for match_value, rows in selected_rows_1.items():
+                if match_value not in selected_rows_2:
+                    matched_rows_1 += rows
+        elif self.selects[1].match_inclusion:
+            for match_value, rows in selected_rows_2.items():
+                if match_value not in selected_rows_1:
+                    matched_rows_2 += rows
+
         self._completed = True
