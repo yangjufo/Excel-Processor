@@ -4,7 +4,7 @@ A simple CSV/EXCEL files processing tool, which supports computing sum and match
 
 ## Demo
 * The following content uses CSV files as an example.
-* Check out the video below for EXCEL file examples.[![image video](https://raw.githubusercontent.com/yangjufo/Excel-Processor/main/testing/xlsx/recording/EXCEL_video_cover.png)](https://www.youtube.com/channel/UCmCXkTp28U3-wP26R-uJCmQ)
+* Check out the video below for EXCEL file examples.[![image video](https://raw.githubusercontent.com/yangjufo/Excel-Processor/main/testing/xlsx/recording/EXCEL_video_cover.png)](https://youtu.be/liUIVDElbII)
 
 ### Input data
 #### biostats_1

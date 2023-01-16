@@ -3,7 +3,7 @@
 
 ## 示例
 * 以下内容以CSV为例。
-* EXCEL的例子请查看下方视频。[![image video](https://raw.githubusercontent.com/yangjufo/Excel-Processor/main/testing/xlsx/recording/EXCEL_video_cover.png)](https://www.youtube.com/channel/UCmCXkTp28U3-wP26R-uJCmQ)
+* EXCEL的例子请查看下方视频。[![image video](https://raw.githubusercontent.com/yangjufo/Excel-Processor/main/testing/xlsx/recording/EXCEL_video_cover.png)](https://youtu.be/liUIVDElbII)
 
 ### 输入数据
 #### biostats_1
