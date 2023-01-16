@@ -1,4 +1,4 @@
-[中文](https://github.com/yangjufo/Excel-Processor/blob/main/README-ZH.md)
+[中文](https://github.com/yangjufo/Excel-Processor/blob/main/README-ZH.md) :point_left:
 # A CSV / EXCEL Files Processing Tool
 A simple CSV/EXCEL files processing tool, which supports computing sum and match data.
 
