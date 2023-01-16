@@ -17,7 +17,7 @@ A simple CSV/EXCEL files processing tool, which supports computing sum and match
 ![load files](https://raw.githubusercontent.com/yangjufo/Excel-Processor/main/testing/csv/screenshots/load-files.png)
 
 ### Sum
-Compute sum for a column. Support filter on another column.
+Compute sum for a column. Support filtering on a column.
 
 #### Add a sum task
 ![add a sum task](https://raw.githubusercontent.com/yangjufo/Excel-Processor/main/testing/csv/screenshots/add-sum-task.png)
@@ -26,16 +26,16 @@ Compute sum for a column. Support filter on another column.
 ![sum task results](https://raw.githubusercontent.com/yangjufo/Excel-Processor/main/testing/csv/screenshots/sum-results.png)
 
 ### Data Match
-Match data between two files based on a column. Users can filter on another column to rule out uninteresting rows.
+Match data between two files based on a column. Users can filter on a column to rule out uninteresting rows.
 
  Based on match condition selections, Possible combinations include:
 
-| File 1 should have the value | File 2 should have the value | Output Row                      |
-| ---------------------------- | ---------------------------- | ------------------------------- |
-| YES                          | YES                          | Combined columns for both files |
-| YES                          | NO                           | File 1 columns                  |
-| NO                           | YES                          | File 2 columns                  |
-| NO                           | NO                           | Empty (invalid inputs)          |
+| File 1 should have the value | File 2 should have the value | Output Row                |
+| ---------------------------- | ---------------------------- | ------------------------- |
+| YES                          | YES                          | All columns in both files |
+| YES                          | NO                           | File 1 columns            |
+| NO                           | YES                          | File 2 columns            |
+| NO                           | NO                           | Empty (invalid inputs)    |
 
 #### Add a data match task
 ![add a data match task](https://raw.githubusercontent.com/yangjufo/Excel-Processor/main/testing/csv/screenshots/add-data-match-task.png)

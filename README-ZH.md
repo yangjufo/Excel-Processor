@@ -47,6 +47,6 @@
 #### 删除一个文件
 点击文件名旁的删除按钮。所有使用该文件作为输入的任务也会被删除。
 
-#### Delete a task
+#### 删除一个任务
 点击任务旁的删除按钮。
 ![delete a task](https://raw.githubusercontent.com/yangjufo/Excel-Processor/main/testing/csv/screenshots/added-tasks.png)
